@@ -4,3 +4,48 @@
 @media(max-width:900px){.story-layout,.teaching-layout,.sort-layout,.body-layout{grid-template-columns:1fr}.character-stage{min-height:420px}.character-stage img{max-height:390px}.mission-grid{grid-template-columns:1fr}.body-diagram{min-height:720px}.sort-layout{grid-template-columns:1fr}.card-bank{max-height:280px}.y-chart{min-height:800px}.topbar{position:relative}.screen{padding-top:28px}}
 @media(max-width:620px){.topbar{align-items:flex-start;flex-direction:column}.progress{width:115px}.screen{padding:20px 12px}.lesson-header,.game-header{flex-direction:column}.choice-grid{grid-template-columns:1fr}.scenario-card{grid-template-columns:1fr}.scenario-card img{height:180px}.y-chart{display:flex;flex-direction:column;min-height:auto}.drop-zone{min-height:240px}.body-diagram{min-height:760px}.body-diagram>img{width:70%;left:15%}.body-zone{min-width:105px;max-width:140px;font-size:.58rem}.body-zone.brain{left:1%}.body-zone.eyes{left:1%;top:23%}.body-zone.ears{right:1%}.body-zone.mouth{right:1%;top:30%}.body-zone.body{right:1%;top:49%}.body-zone.hands{right:1%;top:67%}.body-zone.feet{left:1%}.glorb-prompt{grid-template-columns:75px 1fr}.glorb-prompt img{width:75px;height:75px}.glorb-note{grid-template-columns:70px 1fr}.glorb-note img{width:65px;height:65px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+/* ===========================
+   CLICK FIX
+   =========================== */
+
+.terminal::before{
+    pointer-events:none !important;
+}
+
+.scanner-ring{
+    pointer-events:none !important;
+}
+
+.scanlines{
+    pointer-events:none !important;
+}
+
+.stars{
+    pointer-events:none !important;
+}
+
+.card-shell::before,
+.card-shell::after{
+    pointer-events:none !important;
+}
+
+.character-stage img{
+    pointer-events:none !important;
+}
+
+.specimen-tag{
+    pointer-events:none !important;
+}
+
+button,
+.button,
+a,
+.choice,
+.mission-card,
+.sort-card,
+.body-card,
+.body-zone{
+    position:relative;
+    z-index:100;
+    pointer-events:auto;
+}
