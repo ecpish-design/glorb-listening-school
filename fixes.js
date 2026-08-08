@@ -1,359 +1,174 @@
-
-/* =========================================================
-   GLORB LISTENING SCHOOL — VISUAL / INTERACTION FIXES V2
-   Loaded after the original script.js.
-========================================================= */
+/* GLORB LISTENING MISSION — V10 behaviour/data patch
+   Load AFTER script.js. */
 
 (() => {
-  const q = (selector, parent = document) => parent.querySelector(selector);
-  const qa = (selector, parent = document) => [...parent.querySelectorAll(selector)];
+  /* ---------- NEW LEARNING / SORT VISUALS ----------
+     Uploaded resource set mapping:
+     28 eye contact, 29 face speaker, 30 listen carefully, 31 focus,
+     32 nod, 33 wait turn, 34 ask questions, 35 repeat back,
+     36 tell speaker you understand, 37 wait for speaker to stop,
+     38 keep hands and feet still, 39 ignore distractions,
+     40 showing interest.
+  */
+  const teachingImageMap = [28,29,30,31,32,33,34,35,36,37,38,39];
+  if (typeof teaching !== 'undefined') {
+    teaching.forEach((card, i) => {
+      if (teachingImageMap[i]) card.img = teachingImageMap[i];
+    });
+  }
 
-  const shuffled = items => {
-    const copy = [...items];
-    for (let i = copy.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
+  const sortImageByLabel = {
+    'Eye Contact':'28.png',
+    'Face the Speaker':'29.png',
+    'Listen Carefully':'30.png',
+    'Nod Your Head':'32.png',
+    'Wait Your Turn':'33.png',
+    'Ask Questions':'34.png',
+    'Repeat Back':'35.png',
+    'Tell the Speaker You Understand':'36.png',
+    'Wait for the Speaker to Stop Before Speaking':'37.png',
+    'Keep Hands and Feet Still':'38.png',
+    'Ignore Distractions':'39.png',
+    'Showing Interest':'40.png'
   };
 
-  /* ---------------------------------------------------------
-     REMOVE THE OLD "Y-CHART" LANGUAGE FROM THE STORY
-  --------------------------------------------------------- */
-  try {
-    const lastIntro = dialogue?.[dialogue.length - 1];
-    if (lastIntro) {
-      lastIntro.text =
-        'Earth Expert, I need your help.\n\n' +
-        'Please teach me what active listening looks like, sounds like and feels like.\n\n' +
-        'Then we can complete a Sort Activity, calibrate my listening body, and help me try talking to Pip again.';
-    }
-  } catch (error) {
-    console.info('Dialogue wording patch skipped:', error);
-  }
-
-
-  /* =========================================================
-     MISSION 1 — SORT ACTIVITY
-     Exactly 12 illustrated cards, matching the supplied design.
-  ========================================================= */
-
-  const sortCardsV2 = [
-    { label: 'Eye Contact', bucket: 'looks', image: '22.webp' },
-    { label: 'Face the Speaker', bucket: 'looks', image: '23.webp' },
-    { label: 'Nod Your Head', bucket: 'looks', image: '26.webp' },
-
-    { label: 'Ask Questions', bucket: 'sounds', image: '28.webp' },
-    { label: 'Repeat Back', bucket: 'sounds', image: '29.webp' },
-    { label: 'Tell the Speaker You Understand', bucket: 'sounds', image: '30.webp' },
-    { label: 'Wait for the Speaker to Stop Before Speaking', bucket: 'sounds', image: '31.webp' },
-
-    { label: 'Listen Carefully', bucket: 'feels', image: '24.webp' },
-    { label: 'Wait Your Turn', bucket: 'feels', image: '27.webp' },
-    { label: 'Keep Hands and Feet Still', bucket: 'feels', image: '32.webp' },
-    { label: 'Ignore Distractions', bucket: 'feels', image: '33.webp' },
-    { label: 'Showing Interest', bucket: 'feels', image: 'showing-interest.webp' }
-  ];
-
-  function resetSortState() {
-    try {
-      state.selectedSort = null;
-      state.sortDone = 0;
-    } catch (_) {}
-  }
-
-  function renderSortV2() {
-    const bank = q('#sortBank');
-    if (!bank) return;
-
-    resetSortState();
-    bank.innerHTML = '';
-
-    qa('.listening-category .drop-items').forEach(zone => {
-      zone.innerHTML = '<span class="drop-placeholder">DRAG CARDS HERE</span>';
+  if (typeof sortData !== 'undefined') {
+    sortData.forEach(item => {
+      if (sortImageByLabel[item.label]) item.image = sortImageByLabel[item.label];
     });
-
-    shuffled(sortCardsV2).forEach((item, index) => {
-      const button = document.createElement('button');
-      button.className = 'sort-card visual-sort-card';
-      button.type = 'button';
-      button.draggable = true;
-      button.dataset.bucket = item.bucket;
-      button.dataset.sortId = String(index);
-
-      button.innerHTML = `
-        <img src="assets/listening/${item.image}" alt="">
-        <span>${item.label}</span>
-      `;
-
-      button.addEventListener('dragstart', event => {
-        event.dataTransfer.setData('text/glorb-sort-id', String(index));
-      });
-
-      button.addEventListener('click', event => {
-        event.stopPropagation();
-
-        try {
-          state.selectedSort = state.selectedSort === button ? null : button;
-        } catch (_) {}
-
-        qa('.visual-sort-card').forEach(card => {
-          card.classList.toggle('selected', card === button && button === state.selectedSort);
-        });
-      });
-
-      bank.appendChild(button);
-    });
-
-    const feedback = q('#sortFeedback');
-    if (feedback) {
-      feedback.textContent = 'Sort each listening behaviour into the correct category.';
-    }
+    if (typeof renderSort === 'function') renderSort();
   }
 
-  function placeSortV2(card, category) {
-    if (!card || !category) return;
+  /* ---------- STORY LAYOUT FIXES ---------- */
+  if (typeof runDialogue === 'function') {
+    const originalRunDialogue = runDialogue;
+    runDialogue = function patchedRunDialogue(){
+      originalRunDialogue();
+      const shell = document.querySelector('#storyScreen .story-shell');
+      if (!shell) return;
+      shell.classList.toggle('walkaway-mode', dialogueIndex === 4);
+    };
+  }
 
-    if (card.dataset.bucket !== category.dataset.bucket) {
-      const feedback = q('#sortFeedback');
-      if (feedback) {
-        feedback.textContent = 'That option belongs in a different category. Try again.';
-      }
-      card.classList.add('selected');
-      window.setTimeout(() => card.classList.remove('selected'), 450);
-      return;
+  /* ---------- FIELD NOTE: TWO-STEP CARD FLOW ----------
+     First press reveals Glorb's larger note over the lesson.
+     Second press advances to the next research card.
+  */
+  let v10NoteShown = false;
+
+  function hideV10Note(){
+    if (typeof stopTeachingNote === 'function') stopTeachingNote();
+    const annotation = document.getElementById('glorbAnnotation');
+    if (annotation) {
+      annotation.classList.remove('is-visible','note-complete');
     }
+    const note = document.getElementById('teachingGlorb');
+    if (note) note.textContent = '';
+    v10NoteShown = false;
+  }
 
-    const target = q('.drop-items', category);
-    if (!target) return;
+  if (typeof renderTeaching === 'function') {
+    renderTeaching = function v10RenderTeaching(){
+      if (typeof stopNarration === 'function') stopNarration();
+      hideV10Note();
 
-    const placeholder = q('.drop-placeholder', target);
-    if (placeholder) placeholder.remove();
+      const card = teaching[teachIndex];
+      document.getElementById('teachingImage').src = `assets/listening/${card.img}.png`;
+      document.getElementById('teachingImage').alt = card.title;
+      document.getElementById('teachingTitle').textContent = card.title;
+      document.getElementById('teachingMeaning').textContent = card.meaning;
+      document.getElementById('teachingWhy').textContent = card.why;
+      document.getElementById('cardCount').textContent = teachIndex + 1;
+      document.getElementById('prevCard').disabled = teachIndex === 0;
+      document.getElementById('nextCard').textContent = "SHOW GLORB'S NOTE";
 
-    const placed = document.createElement('div');
-    placed.className = 'placed-card placed-visual-card';
-    placed.innerHTML = card.innerHTML;
-    target.appendChild(placed);
+      const glorbImg = document.getElementById('teachingGlorbImage');
+      glorbImg.src = card.glorbImg || 'assets/glorb/intro-glorb.png';
+      glorbImg.alt = `Glorb commenting on ${card.title}`;
+    };
+  }
 
-    card.remove();
-
-    try {
-      state.selectedSort = null;
-      state.sortDone += 1;
-    } catch (_) {}
-
-    const completed = typeof state !== 'undefined' ? state.sortDone : 0;
-    const feedback = q('#sortFeedback');
-
-    if (feedback) {
-      feedback.textContent = `${completed} of ${sortCardsV2.length} cards sorted.`;
-    }
-
-    if (completed === sortCardsV2.length) {
-      if (feedback) {
-        feedback.textContent =
-          'SORT ACTIVITY COMPLETE — You helped Glorb understand what listening looks like, sounds like and feels like.';
+  const nextCardBtn = document.getElementById('nextCard');
+  if (nextCardBtn) {
+    nextCardBtn.onclick = () => {
+      const card = teaching[teachIndex];
+      if (!v10NoteShown) {
+        v10NoteShown = true;
+        if (typeof revealTeachingNote === 'function') revealTeachingNote(card);
+        nextCardBtn.textContent = teachIndex === teaching.length - 1
+          ? 'OPEN MISSION CONTROL'
+          : 'NEXT CARD';
+        return;
       }
 
-      try {
-        setMissionComplete(1);
-        window.setTimeout(() => show('missionHub'), 1400);
-      } catch (_) {}
-    }
+      if (teachIndex < teaching.length - 1) {
+        teachIndex += 1;
+        renderTeaching();
+      } else {
+        if (typeof setProgress === 'function') setProgress(28);
+        if (typeof show === 'function') show('missionHub');
+      }
+    };
   }
 
-  qa('.listening-category').forEach(category => {
-    category.addEventListener('dragover', event => {
-      event.preventDefault();
-      category.classList.add('dragover');
-    });
+  const prevCardBtn = document.getElementById('prevCard');
+  if (prevCardBtn) {
+    prevCardBtn.onclick = () => {
+      if (teachIndex > 0) {
+        teachIndex -= 1;
+        renderTeaching();
+      }
+    };
+  }
 
-    category.addEventListener('dragleave', () => {
-      category.classList.remove('dragover');
-    });
+  /* Make sure current card uses the corrected visual and starts without the note. */
+  if (document.querySelector('#learnScreen')) {
+    renderTeaching();
+  }
 
-    category.addEventListener('drop', event => {
-      event.preventDefault();
-      category.classList.remove('dragover');
+  /* ---------- BODY CALIBRATION: WRONG ANSWERS CAN BE CHANGED ---------- */
+  function releaseBodyZone(zone){
+    const assignedId = zone.dataset.assignedId;
+    if (!assignedId) return;
 
-      const id = event.dataTransfer.getData('text/glorb-sort-id');
-      const card = q(`.visual-sort-card[data-sort-id="${id}"]`);
-      placeSortV2(card, category);
-    });
+    const card = document.querySelector(`.body-card[data-id="${assignedId}"]`);
+    if (card) card.classList.remove('hidden-card');
 
-    category.addEventListener('click', event => {
-      if (event.target.closest('.placed-visual-card')) return;
+    zone.dataset.assignedPart = '';
+    zone.dataset.assignedId = '';
+    zone.classList.remove('filled','correct','incorrect','dragover');
+    const small = zone.querySelector('small');
+    if (small) small.textContent = '';
 
-      try {
-        if (state.selectedSort) {
-          placeSortV2(state.selectedSort, category);
-        }
-      } catch (_) {}
-    });
+    state.bodyPlaced = Math.max(0, state.bodyPlaced - 1);
+    state.selectedBody = null;
+    document.querySelectorAll('.body-card').forEach(c => c.classList.remove('selected'));
+
+    const check = document.getElementById('checkBody');
+    if (check) check.disabled = state.bodyPlaced !== bodyData.length;
+
+    const feedback = document.getElementById('bodyFeedback');
+    if (feedback) feedback.textContent = `${state.bodyPlaced} of 7 body parts filled. Choose a new card for the empty box.`;
+  }
+
+  document.querySelectorAll('.body-zone').forEach(zone => {
+    zone.addEventListener('click', event => {
+      if (zone.classList.contains('incorrect') && !state.selectedBody) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        releaseBodyZone(zone);
+      }
+    }, true);
   });
 
-  renderSortV2();
-
-
-  /* =========================================================
-     MISSION 2 — BODY CALIBRATION
-     Text-only choices + worksheet diagram as the visual map.
-  ========================================================= */
-
-  const bodyCardsV2 = [
-    ['Face the speaker and nod to show you understand.', 'head'],
-    ['Look towards the speaker.', 'eyes'],
-    ['Listen carefully to what the speaker is saying.', 'ears'],
-    ['Stay quiet while they are speaking. Ask questions or respond when it is your turn.', 'mouth'],
-    ['Face the speaker and stay focused.', 'body'],
-    ['Keep hands calm and still.', 'hands'],
-    ['Keep feet calm and stay in one place.', 'feet']
-  ];
-
-  function replaceBodyZonesToRemoveOldListeners() {
-    qa('.body-zone').forEach(oldZone => {
-      const replacement = oldZone.cloneNode(true);
-      replacement.classList.remove('done', 'dragover');
-      const small = q('small', replacement);
-      if (small) small.textContent = '';
-      oldZone.replaceWith(replacement);
-    });
+  /* After checking, wrong answers remain editable instead of becoming a dead end. */
+  const checkBodyBtn = document.getElementById('checkBody');
+  if (checkBodyBtn) {
+    const originalCheck = checkBodyBtn.onclick;
+    checkBodyBtn.onclick = function(event){
+      originalCheck.call(this, event);
+      const wrong = document.querySelectorAll('.body-zone.incorrect');
+      wrong.forEach(zone => zone.setAttribute('title','Tap this red answer to change it'));
+    };
   }
-
-  function renderBodyV2() {
-    const host = q('#bodyCards');
-    if (!host) return;
-
-    try {
-      state.selectedBody = null;
-      state.bodyDone = 0;
-    } catch (_) {}
-
-    host.innerHTML = '';
-
-    shuffled(
-      bodyCardsV2.map((item, index) => ({ item, index }))
-    ).forEach(({ item, index }) => {
-      const [label, part] = item;
-
-      const button = document.createElement('button');
-      button.className = 'body-card body-text-card';
-      button.type = 'button';
-      button.draggable = true;
-      button.textContent = label;
-      button.dataset.part = part;
-      button.dataset.bodyId = String(index);
-
-      button.addEventListener('dragstart', event => {
-        event.dataTransfer.setData('text/glorb-body-id', String(index));
-      });
-
-      button.addEventListener('click', () => {
-        try {
-          state.selectedBody = state.selectedBody === button ? null : button;
-        } catch (_) {}
-
-        qa('.body-text-card').forEach(card => {
-          card.classList.toggle('selected', card === state.selectedBody);
-        });
-      });
-
-      host.appendChild(button);
-    });
-
-    const feedback = q('#bodyFeedback');
-    if (feedback) {
-      feedback.textContent = 'Seven body parts need listening instructions.';
-    }
-  }
-
-  function placeBodyV2(card, zone) {
-    if (!card || !zone || zone.classList.contains('done')) return;
-
-    if (card.dataset.part !== zone.dataset.part) {
-      const feedback = q('#bodyFeedback');
-      const part = q('span', zone)?.textContent?.toLowerCase() || 'body part';
-
-      if (feedback) {
-        feedback.textContent =
-          `That instruction does not match Glorb's ${part}. Try another body part.`;
-      }
-      return;
-    }
-
-    const small = q('small', zone);
-    if (small) small.textContent = card.textContent;
-
-    zone.classList.add('done');
-    card.remove();
-
-    try {
-      state.selectedBody = null;
-      state.bodyDone += 1;
-    } catch (_) {}
-
-    const completed = typeof state !== 'undefined' ? state.bodyDone : 0;
-    const feedback = q('#bodyFeedback');
-
-    if (feedback) {
-      feedback.textContent = `${completed} of 7 body parts calibrated.`;
-    }
-
-    if (completed === 7) {
-      if (feedback) {
-        feedback.textContent =
-          'BODY CALIBRATION COMPLETE — Glorb now knows how to use his body to show he is listening.';
-      }
-
-      try {
-        setMissionComplete(2);
-        window.setTimeout(() => show('missionHub'), 1400);
-      } catch (_) {}
-    }
-  }
-
-  replaceBodyZonesToRemoveOldListeners();
-  renderBodyV2();
-
-  qa('.body-zone').forEach(zone => {
-    zone.addEventListener('dragover', event => {
-      event.preventDefault();
-      zone.classList.add('dragover');
-    });
-
-    zone.addEventListener('dragleave', () => {
-      zone.classList.remove('dragover');
-    });
-
-    zone.addEventListener('drop', event => {
-      event.preventDefault();
-      zone.classList.remove('dragover');
-
-      const id = event.dataTransfer.getData('text/glorb-body-id');
-      const card = q(`.body-text-card[data-body-id="${id}"]`);
-      placeBodyV2(card, zone);
-    });
-
-    zone.addEventListener('click', () => {
-      try {
-        if (state.selectedBody) {
-          placeBodyV2(state.selectedBody, zone);
-        }
-      } catch (_) {}
-    });
-  });
-
-
-  /* =========================================================
-     MISSION 3 — MIX THE CORRECT / INCORRECT OPTIONS
-  ========================================================= */
-
-  const actionHost = q('#actionChoices');
-
-  if (actionHost) {
-    shuffled(qa('.choice', actionHost)).forEach(choice => {
-      actionHost.appendChild(choice);
-    });
-  }
-
 })();
