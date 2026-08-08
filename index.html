@@ -7,7 +7,7 @@
 
   <title>Glorb &amp; The Listening Mission</title>
 
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 
 <body>
@@ -62,34 +62,45 @@
     <section class="screen active" id="bootScreen">
       <div class="terminal shell">
 
-        <p class="eyebrow">INCOMING TRANSMISSION</p>
-
-        <h1>
-          GLORB &amp; THE<br>
-          LISTENING MISSION
-        </h1>
-
-        <div class="signal-row">
-          <span>SIGNAL</span>
-
-          <div class="signal-track">
-            <div id="signalFill"></div>
-          </div>
-
-          <strong id="signalPercent">0%</strong>
+        <div class="boot-character" aria-hidden="true">
+          <img
+            src="assets/glorb/calm-body-note.png"
+            alt=""
+          >
         </div>
 
-        <p id="bootText" class="mono">
-          Searching 47 light years of classroom space…
-        </p>
+        <div class="boot-copy">
 
-        <button
-          id="startBtn"
-          class="button primary hidden"
-          type="button"
-        >
-          OPEN TRANSMISSION
-        </button>
+          <p class="eyebrow">INCOMING TRANSMISSION</p>
+
+          <h1>
+            GLORB &amp; THE<br>
+            LISTENING MISSION
+          </h1>
+
+          <div class="signal-row">
+            <span>SIGNAL</span>
+
+            <div class="signal-track">
+              <div id="signalFill"></div>
+            </div>
+
+            <strong id="signalPercent">0%</strong>
+          </div>
+
+          <p id="bootText" class="mono">
+            Searching 47 light years of classroom space…
+          </p>
+
+          <button
+            id="startBtn"
+            class="button primary hidden"
+            type="button"
+          >
+            OPEN TRANSMISSION
+          </button>
+
+        </div>
 
       </div>
     </section>
@@ -104,7 +115,7 @@
         <div class="story-visual">
           <img
             id="storyGlorb"
-            src="assets/glorb/happy-face.webp"
+            src="assets/glorb/intro-glorb.png"
             alt="Glorb"
           >
         </div>
@@ -153,73 +164,96 @@
           </div>
 
           <div class="counter">
-            <span id="cardCount">1</span> / 12
+            CARD <span id="cardCount">1</span> / 12
           </div>
 
         </header>
 
 
-        <div class="teaching-layout">
+        <div class="teaching-stage">
 
-          <div class="teaching-card">
-            <img
-              id="teachingImage"
-              src="assets/listening/22.webp"
-              alt=""
-            >
-          </div>
+          <article class="research-card">
 
-
-          <div class="teaching-copy">
-
-            <p class="eyebrow dark">
-              ACTIVE LISTENING CARD
-            </p>
-
-            <h3 id="teachingTitle">
-              Eye Contact
-            </h3>
-
-            <p id="teachingMeaning"></p>
-
-
-            <div class="why-box">
-              <strong>WHY IT HELPS</strong>
-              <p id="teachingWhy"></p>
-            </div>
-
-
-            <div class="glorb-note">
-
+            <div class="research-card-visual">
               <img
-                src="assets/glorb/happy-face.webp"
-                alt="Glorb"
+                id="teachingImage"
+                src="assets/listening/22.png"
+                alt=""
               >
+            </div>
 
+
+            <div class="research-card-copy">
+
+              <p class="eyebrow dark">
+                ACTIVE LISTENING // RESEARCH CARD
+              </p>
+
+              <h3 id="teachingTitle">
+                Eye Contact
+              </h3>
+
+              <p
+                id="teachingMeaning"
+                class="skill-meaning"
+              ></p>
+
+
+              <div class="why-box">
+                <strong>WHY IT HELPS</strong>
+                <p id="teachingWhy"></p>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <aside
+            id="glorbAnnotation"
+            class="glorb-annotation"
+            aria-live="polite"
+          >
+
+            <img
+              id="teachingGlorbImage"
+              src="assets/glorb/eye-contact-note.png"
+              alt="Glorb adding a field note"
+            >
+
+            <div class="glorb-scribble">
+              <span>GLORB // FIELD NOTE</span>
               <p id="teachingGlorb"></p>
-
             </div>
 
+          </aside>
 
-            <div class="button-row">
+        </div>
 
-              <button
-                id="prevCard"
-                class="button ghost"
-                type="button"
-              >
-                BACK
-              </button>
 
-              <button
-                id="nextCard"
-                class="button primary"
-                type="button"
-              >
-                NEXT CARD
-              </button>
+        <div class="teaching-footer">
 
-            </div>
+          <p class="teaching-hint mono">
+            Read the research card. Glorb will add his own note.
+          </p>
+
+          <div class="button-row">
+
+            <button
+              id="prevCard"
+              class="button ghost"
+              type="button"
+            >
+              BACK
+            </button>
+
+            <button
+              id="nextCard"
+              class="button primary"
+              type="button"
+            >
+              NEXT CARD
+            </button>
 
           </div>
 
@@ -320,7 +354,7 @@
         <div class="activity-intro">
 
           <img
-            src="assets/glorb/happy-face.webp"
+            src="assets/glorb/intro-glorb.png"
             alt="Glorb"
           >
 
@@ -349,10 +383,7 @@
             data-bucket="looks"
           >
 
-            <img
-              src="assets/glorb/assets:glorb:looks-like.webp"
-              alt="Looks like — what we see with our eyes"
-            >
+            <div class="category-header"><strong>LOOKS LIKE</strong><span>What we see with our eyes.</span></div>
 
             <div class="drop-items">
               <span class="drop-placeholder">
@@ -368,10 +399,7 @@
             data-bucket="sounds"
           >
 
-            <img
-              src="assets/glorb/assets:glorb:sounds-like.webp"
-              alt="Sounds like — what we hear with our ears"
-            >
+            <div class="category-header"><strong>SOUNDS LIKE</strong><span>What we hear with our ears.</span></div>
 
             <div class="drop-items">
               <span class="drop-placeholder">
@@ -387,10 +415,7 @@
             data-bucket="feels"
           >
 
-            <img
-              src="assets/glorb/assets:glorb:feels-like.webp"
-              alt="Feels like — what we feel in our heart and body"
-            >
+            <div class="category-header"><strong>FEELS LIKE</strong><span>What we feel in our heart and body.</span></div>
 
             <div class="drop-items">
               <span class="drop-placeholder">
@@ -462,7 +487,7 @@
         <div class="activity-intro body-intro">
 
           <img
-            src="assets/glorb/happy-face.webp"
+            src="assets/glorb/intro-glorb.png"
             alt="Glorb"
           >
 
@@ -620,7 +645,7 @@
         <div class="apply-scenario">
 
           <img
-            src="assets/glorb/assets:glorb:unsure.png"
+            src="assets/glorb/eye-contact-note.png"
             alt="Glorb looking unsure"
           >
 
@@ -721,7 +746,7 @@
         <div class="story-visual final-visual">
 
           <img
-            src="assets/glorb/happy-face.webp"
+            src="assets/glorb/understand-note.png"
             alt="Glorb smiling"
           >
 
@@ -776,6 +801,6 @@
 
   </main>
 
-  <script src="script.js?v=14"></script>
+  <script src="script.js?v=18"></script>
 </body>
 </html>

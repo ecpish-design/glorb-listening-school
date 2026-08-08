@@ -44,10 +44,29 @@ function resetReadAloudButton() {
 
 
 function stopNarration() {
+  narrationRunId =
+    (typeof narrationRunId === 'number')
+      ? narrationRunId + 1
+      : 1;
+
   if (
     'speechSynthesis' in window
   ) {
     window.speechSynthesis.cancel();
+  }
+
+  if (
+    typeof speechQueue !==
+    'undefined'
+  ) {
+    speechQueue = [];
+  }
+
+  if (
+    typeof speechQueueIndex !==
+    'undefined'
+  ) {
+    speechQueueIndex = 0;
   }
 
   currentSpeech =
@@ -439,7 +458,203 @@ function getCurrentScreenText() {
 }
 
 
-function chooseSpeechVoice() {
+function splitSpeechText(text, maxLength = 230) {
+  const cleaned =
+    normaliseSpeechText(text);
+
+  if (!cleaned) {
+    return [];
+  }
+
+  const sentences =
+    cleaned.match(
+      /[^.!?]+[.!?]+|[^.!?]+$/g
+    ) || [cleaned];
+
+  const chunks = [];
+  let current = '';
+
+  sentences.forEach(sentence => {
+    const next =
+      `${current} ${sentence}`
+        .trim();
+
+    if (
+      next.length > maxLength &&
+      current
+    ) {
+      chunks.push(current.trim());
+      current = sentence.trim();
+    }
+
+    else {
+      current = next;
+    }
+  });
+
+  if (current) {
+    chunks.push(current.trim());
+  }
+
+  return chunks;
+}
+
+
+function getCurrentSpeechSegments() {
+  const activeScreen =
+    $('.screen.active');
+
+  if (!activeScreen) {
+    return [];
+  }
+
+
+  if (
+    activeScreen.id ===
+    'storyScreen'
+  ) {
+    return splitSpeechText(
+      dialogue[dialogueIndex]?.text || ''
+    )
+      .map(text => ({
+        role: 'glorb',
+        text
+      }));
+  }
+
+
+  if (
+    activeScreen.id ===
+    'learnScreen'
+  ) {
+    const card =
+      teaching[teachIndex];
+
+    if (!card) {
+      return [];
+    }
+
+    const narratorText =
+      `
+      ${card.title}.
+      ${card.meaning}
+      Why it helps.
+      ${card.why}
+      `;
+
+    const narrator =
+      splitSpeechText(narratorText)
+        .map(text => ({
+          role: 'narrator',
+          text
+        }));
+
+    const glorb =
+      splitSpeechText(card.glorb)
+        .map(text => ({
+          role: 'glorb',
+          text
+        }));
+
+    return [
+      ...narrator,
+      ...glorb
+    ];
+  }
+
+
+  return splitSpeechText(
+    getCurrentScreenText()
+  )
+    .map(text => ({
+      role: 'narrator',
+      text
+    }));
+}
+
+
+function voiceQualityScore(
+  voice,
+  role = 'narrator'
+) {
+  const name =
+    String(voice.name || '')
+      .toLowerCase();
+
+  const lang =
+    String(voice.lang || '')
+      .toLowerCase();
+
+  let score = 0;
+
+  if (lang === 'en-au') {
+    score += 120;
+  }
+
+  else if (lang.startsWith('en-')) {
+    score += 55;
+  }
+
+  else if (lang === 'en') {
+    score += 35;
+  }
+
+  if (
+    /australian|australia/.test(name)
+  ) {
+    score += 55;
+  }
+
+  if (
+    /enhanced|premium|natural|neural|siri/.test(
+      name
+    )
+  ) {
+    score += 45;
+  }
+
+  if (
+    /google/.test(name)
+  ) {
+    score += 18;
+  }
+
+  if (
+    /karen|lee/.test(name)
+  ) {
+    score += 32;
+  }
+
+  if (
+    /samantha|daniel|moira/.test(name)
+  ) {
+    score += 16;
+  }
+
+  if (voice.localService) {
+    score += 8;
+  }
+
+  if (
+    /compact|eloquence/.test(name)
+  ) {
+    score -= 22;
+  }
+
+  if (
+    role === 'glorb' &&
+    /lee|daniel/.test(name)
+  ) {
+    score += 8;
+  }
+
+  return score;
+}
+
+
+function chooseSpeechVoice(
+  role = 'narrator'
+) {
   if (
     !(
       'speechSynthesis'
@@ -453,19 +668,179 @@ function chooseSpeechVoice() {
     window.speechSynthesis
       .getVoices();
 
-  return (
-    voices.find(voice =>
-      /^en-AU$/i.test(
-        voice.lang
-      )
-    ) ||
-    voices.find(voice =>
-      /^en-/i.test(
-        voice.lang
-      )
-    ) ||
-    null
+  if (!voices.length) {
+    return null;
+  }
+
+  return [...voices]
+    .sort(
+      (a, b) =>
+        voiceQualityScore(
+          b,
+          role
+        ) -
+        voiceQualityScore(
+          a,
+          role
+        )
+    )[0] || null;
+}
+
+
+let speechQueue = [];
+let speechQueueIndex = 0;
+let narrationRunId = 0;
+
+
+function markReadAloudSpeaking() {
+  if (!readAloudBtn) {
+    return;
+  }
+
+  readAloudBtn.classList.add(
+    'speaking'
   );
+
+  readAloudBtn.setAttribute(
+    'aria-pressed',
+    'true'
+  );
+
+  const label =
+    readAloudBtn.querySelector(
+      '.read-label'
+    );
+
+  if (label) {
+    label.textContent =
+      'STOP';
+  }
+}
+
+
+function finishNarration(runId) {
+  if (
+    runId !== narrationRunId
+  ) {
+    return;
+  }
+
+  speechQueue = [];
+  speechQueueIndex = 0;
+  currentSpeech = null;
+
+  resetReadAloudButton();
+}
+
+
+function speakNextSegment(runId) {
+  if (
+    runId !== narrationRunId
+  ) {
+    return;
+  }
+
+  if (
+    speechQueueIndex >=
+    speechQueue.length
+  ) {
+    finishNarration(runId);
+    return;
+  }
+
+  const segment =
+    speechQueue[
+      speechQueueIndex
+    ];
+
+  speechQueueIndex += 1;
+
+  const utterance =
+    new SpeechSynthesisUtterance(
+      segment.text
+    );
+
+  currentSpeech =
+    utterance;
+
+  utterance.lang =
+    'en-AU';
+
+  /*
+    The browser still controls the final
+    sound, but these settings make the
+    built-in voices less robotic.
+  */
+  if (
+    segment.role ===
+    'glorb'
+  ) {
+    utterance.rate = 0.88;
+    utterance.pitch = 1.06;
+  }
+
+  else {
+    utterance.rate = 0.94;
+    utterance.pitch = 1;
+  }
+
+  utterance.volume = 1;
+
+  const voice =
+    chooseSpeechVoice(
+      segment.role
+    );
+
+  if (voice) {
+    utterance.voice =
+      voice;
+  }
+
+  utterance.onstart =
+    markReadAloudSpeaking;
+
+  utterance.onend =
+    () => {
+      /*
+        A small real pause between
+        sentences sounds more natural
+        than one giant utterance.
+      */
+      setTimeout(
+        () =>
+          speakNextSegment(
+            runId
+          ),
+        segment.role ===
+          'glorb'
+          ? 170
+          : 105
+      );
+    };
+
+  utterance.onerror =
+    event => {
+      /*
+        "interrupted" and "canceled"
+        are normal when the learner
+        changes screen or presses STOP.
+      */
+      if (
+        event.error ===
+          'interrupted' ||
+        event.error ===
+          'canceled'
+      ) {
+        return;
+      }
+
+      finishNarration(runId);
+    };
+
+  window.speechSynthesis
+    .speak(
+      utterance
+    );
 }
 
 
@@ -490,93 +865,33 @@ function speakCurrentScreen() {
 
   if (
     window.speechSynthesis
-      .speaking
+      .speaking ||
+    speechQueue.length
   ) {
     stopNarration();
     return;
   }
 
 
-  const text =
-    getCurrentScreenText();
+  const segments =
+    getCurrentSpeechSegments();
 
-  if (!text) {
+  if (!segments.length) {
     return;
   }
 
+  speechQueue =
+    segments;
 
-  currentSpeech =
-    new SpeechSynthesisUtterance(
-      text
-    );
+  speechQueueIndex = 0;
 
-  currentSpeech.lang =
-    'en-AU';
+  narrationRunId += 1;
 
-  currentSpeech.rate =
-    0.9;
+  markReadAloudSpeaking();
 
-  currentSpeech.pitch =
-    1;
-
-  currentSpeech.volume =
-    1;
-
-
-  const voice =
-    chooseSpeechVoice();
-
-  if (voice) {
-    currentSpeech.voice =
-      voice;
-  }
-
-
-  currentSpeech.onstart =
-    () => {
-      if (!readAloudBtn) {
-        return;
-      }
-
-      readAloudBtn.classList.add(
-        'speaking'
-      );
-
-      readAloudBtn.setAttribute(
-        'aria-pressed',
-        'true'
-      );
-
-      const label =
-        readAloudBtn.querySelector(
-          '.read-label'
-        );
-
-      if (label) {
-        label.textContent =
-          'STOP';
-      }
-    };
-
-
-  currentSpeech.onend =
-    () => {
-      resetReadAloudButton();
-      currentSpeech = null;
-    };
-
-
-  currentSpeech.onerror =
-    () => {
-      resetReadAloudButton();
-      currentSpeech = null;
-    };
-
-
-  window.speechSynthesis
-    .speak(
-      currentSpeech
-    );
+  speakNextSegment(
+    narrationRunId
+  );
 }
 
 
@@ -589,8 +904,8 @@ if (readAloudBtn) {
 
 
 /*
-  Some browsers load the available
-  speech voices after page load.
+  Some browsers load their higher-quality
+  installed voices a moment after page load.
 */
 if (
   'speechSynthesis' in window
@@ -598,7 +913,13 @@ if (
   window.speechSynthesis
     .onvoiceschanged =
     () => {
-      chooseSpeechVoice();
+      chooseSpeechVoice(
+        'narrator'
+      );
+
+      chooseSpeechVoice(
+        'glorb'
+      );
     };
 }
 
@@ -779,7 +1100,7 @@ $('#startBtn').onclick = () => {
 const dialogue = [
   {
     img:
-      'assets/glorb/happy-face.webp',
+      'assets/glorb/intro-glorb.png',
 
     imageClass:
       'close',
@@ -791,7 +1112,7 @@ const dialogue = [
 
   {
     img:
-      'assets/glorb/happy-face.webp',
+      'assets/glorb/zorbax-glorb.png',
 
     imageClass:
       'close',
@@ -815,7 +1136,7 @@ const dialogue = [
 
   {
     img:
-      'assets/glorb/assets:glorb:glorb-interrupts-pip.png',
+      'assets/glorb/glorb-interrupts-pip.png',
 
     imageClass:
       'wide',
@@ -829,7 +1150,7 @@ const dialogue = [
 
   {
     img:
-      'assets/glorb/assets:glorb:pip-walks-away.png',
+      'assets/glorb/pip-walks-away.png',
 
     imageClass:
       'wide',
@@ -844,7 +1165,7 @@ const dialogue = [
 
   {
     img:
-      'assets/glorb/assets:glorb:glorb-needs-help.png',
+      'assets/glorb/glorb-needs-help.png',
 
     imageClass:
       'wide',
@@ -951,7 +1272,9 @@ const teaching = [
     why:
       'It shows that your attention is with them.',
     glorb:
-      'Visual attention signal detected. I should look at the person, not the nearest cloud.'
+      'Visual attention signal detected. I should look at the person, not the nearest cloud.',
+    glorbImg:
+      'assets/glorb/eye-contact-note.png'
   },
 
   {
@@ -962,7 +1285,9 @@ const teaching = [
     why:
       'Your body shows that you are ready to listen.',
     glorb:
-      'My front-facing system must point towards the human. This is surprisingly specific.'
+      'My front-facing system must point towards the human. This is surprisingly specific.',
+    glorbImg:
+      'assets/glorb/face-speaker-note.png'
   },
 
   {
@@ -973,7 +1298,9 @@ const teaching = [
     why:
       'Careful listening helps you understand the whole message.',
     glorb:
-      'The ears collect data. The brain must not replace it with guesses.'
+      'The ears collect data. The brain must not replace it with guesses.',
+    glorbImg:
+      'assets/glorb/listen-carefully-note.png'
   },
 
   {
@@ -984,7 +1311,9 @@ const teaching = [
     why:
       'Focusing helps you notice words, feelings and meaning.',
     glorb:
-      'One conversation at a time. Paper aeroplanes are not part of this research.'
+      'One conversation at a time. Paper aeroplanes are not part of this research.',
+    glorbImg:
+      'assets/glorb/focus-note.png'
   },
 
   {
@@ -995,7 +1324,9 @@ const teaching = [
     why:
       'A nod gives the speaker a quiet sign that you are listening.',
     glorb:
-      'A tiny head movement can transmit “message received.” Efficient.'
+      'A tiny head movement can transmit “message received.” Efficient.',
+    glorbImg:
+      'assets/glorb/nod-note.png'
   },
 
   {
@@ -1006,7 +1337,9 @@ const teaching = [
     why:
       'Taking turns makes conversations fair and easier to understand.',
     glorb:
-      'I have discovered that another person’s turn continues even when I have a fact.'
+      'I have discovered that another person’s turn continues even when I have a fact.',
+    glorbImg:
+      'assets/glorb/wait-turn-note.png'
   },
 
   {
@@ -1017,7 +1350,9 @@ const teaching = [
     why:
       'Questions show interest and help you learn more.',
     glorb:
-      'Connected questions are useful. “What happened next?” is better than “Are clouds edible?”'
+      'Connected questions are useful. “What happened next?” is better than “Are clouds edible?”',
+    glorbImg:
+      'assets/glorb/ask-questions-note.png'
   },
 
   {
@@ -1028,7 +1363,9 @@ const teaching = [
     why:
       'Repeating back checks that you understood correctly.',
     glorb:
-      'This is a verification procedure. At last, a social rule with laboratory qualities.'
+      'This is a verification procedure. At last, a social rule with laboratory qualities.',
+    glorbImg:
+      'assets/glorb/repeat-back-note.png'
   },
 
   {
@@ -1040,19 +1377,23 @@ const teaching = [
     why:
       'These words reassure the speaker that their message arrived.',
     glorb:
-      'Humans require delivery confirmation. I will provide it.'
+      'Humans require delivery confirmation. I will provide it.',
+    glorbImg:
+      'assets/glorb/understand-note.png'
   },
 
   {
     img: 31,
     title:
-      'Wait Before Speaking',
+      'Wait for the Speaker to Stop Before Speaking',
     meaning:
       'Pause until the speaker has completely finished.',
     why:
       'Waiting prevents interruptions and gives the speaker time to explain.',
     glorb:
-      'Sentence completion must occur before cloud deployment.'
+      'Sentence completion must occur before cloud deployment.',
+    glorbImg:
+      'assets/glorb/wait-before-speaking-note.png'
   },
 
   {
@@ -1064,7 +1405,9 @@ const teaching = [
     why:
       'A calm body makes it easier for you and the speaker to focus.',
     glorb:
-      'Hands still. Feet grounded. Confusion reduced by approximately 19%.'
+      'Still hands. Still feet. Now my attention can stay with the human.',
+    glorbImg:
+      'assets/glorb/calm-body-note.png'
   },
 
   {
@@ -1076,9 +1419,105 @@ const teaching = [
     why:
       'Ignoring distractions helps the speaker feel important.',
     glorb:
-      'The paper aeroplane may continue without my supervision.'
+      'The paper aeroplane may continue without my supervision.',
+    glorbImg:
+      'assets/glorb/ignore-distractions-note.png'
   }
 ];
+
+
+let teachingNoteTimer = null;
+let teachingNoteTyping = null;
+
+
+function stopTeachingNote() {
+  clearTimeout(
+    teachingNoteTimer
+  );
+
+  clearInterval(
+    teachingNoteTyping
+  );
+
+  teachingNoteTimer = null;
+  teachingNoteTyping = null;
+}
+
+
+function typeTeachingNote(
+  text,
+  target,
+  annotation
+) {
+  clearInterval(
+    teachingNoteTyping
+  );
+
+  target.textContent = '';
+
+  let index = 0;
+
+  teachingNoteTyping =
+    setInterval(() => {
+      target.textContent +=
+        text[index] || '';
+
+      index += 1;
+
+      if (
+        index >= text.length
+      ) {
+        clearInterval(
+          teachingNoteTyping
+        );
+
+        annotation.classList.add(
+          'note-complete'
+        );
+      }
+    }, 24);
+}
+
+
+function revealTeachingNote(card) {
+  stopTeachingNote();
+
+  const annotation =
+    $('#glorbAnnotation');
+
+  const note =
+    $('#teachingGlorb');
+
+  const image =
+    $('#teachingGlorbImage');
+
+  annotation.classList.remove(
+    'is-visible',
+    'note-complete'
+  );
+
+  note.textContent = '';
+
+  image.src =
+    card.glorbImg ||
+    'assets/glorb/intro-glorb.png';
+
+  image.alt =
+    `Glorb commenting on ${card.title}`;
+
+  teachingNoteTimer =
+    setTimeout(() => {
+      annotation.classList.add(
+        'is-visible'
+      );
+
+      typeTeachingNote(
+        card.glorb,
+        note,
+        annotation
+      );
+    }, 720);
+}
 
 
 let teachIndex = 0;
@@ -1086,12 +1525,13 @@ let teachIndex = 0;
 
 function renderTeaching() {
   stopNarration();
+  stopTeachingNote();
 
   const card =
     teaching[teachIndex];
 
   $('#teachingImage').src =
-    `assets/listening/${card.img}.webp`;
+    `assets/listening/${card.img}.png`;
 
   $('#teachingImage').alt =
     card.title;
@@ -1105,9 +1545,6 @@ function renderTeaching() {
   $('#teachingWhy').textContent =
     card.why;
 
-  $('#teachingGlorb').textContent =
-    card.glorb;
-
   $('#cardCount').textContent =
     teachIndex + 1;
 
@@ -1115,9 +1552,14 @@ function renderTeaching() {
     teachIndex === 0;
 
   $('#nextCard').textContent =
-    teachIndex === teaching.length - 1
+    teachIndex ===
+      teaching.length - 1
       ? 'OPEN MISSION CONTROL'
       : 'NEXT CARD';
+
+  revealTeachingNote(
+    card
+  );
 }
 
 
@@ -1179,73 +1621,73 @@ const sortData = [
   {
     label: 'Eye Contact',
     bucket: 'looks',
-    image: '22.webp'
+    image: '22.png'
   },
 
   {
     label: 'Face the Speaker',
     bucket: 'looks',
-    image: '23.webp'
+    image: '23.png'
   },
 
   {
     label: 'Nod Your Head',
     bucket: 'looks',
-    image: '26.webp'
+    image: '26.png'
   },
 
 
   {
     label: 'Ask Questions',
     bucket: 'sounds',
-    image: '28.webp'
+    image: '28.png'
   },
 
   {
     label: 'Repeat Back',
     bucket: 'sounds',
-    image: '29.webp'
+    image: '29.png'
   },
 
   {
     label:
       'Tell the Speaker You Understand',
     bucket: 'sounds',
-    image: '30.webp'
+    image: '30.png'
   },
 
   {
     label:
       'Wait for the Speaker to Stop Before Speaking',
     bucket: 'sounds',
-    image: '31.webp'
+    image: '31.png'
   },
 
 
   {
     label: 'Listen Carefully',
     bucket: 'feels',
-    image: '24.webp'
+    image: '24.png'
   },
 
   {
     label: 'Wait Your Turn',
     bucket: 'feels',
-    image: '27.webp'
+    image: '27.png'
   },
 
   {
     label:
       'Keep Hands and Feet Still',
     bucket: 'feels',
-    image: '32.webp'
+    image: '32.png'
   },
 
   {
     label:
       'Ignore Distractions',
     bucket: 'feels',
-    image: '33.webp'
+    image: '33.png'
   },
 
   {
