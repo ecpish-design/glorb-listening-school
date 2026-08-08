@@ -7,39 +7,62 @@
 
   <title>Glorb &amp; The Listening Mission</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="fixes.css?v=2">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 
 <body>
-  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- STUDENT-CONTROLLED READ ALOUD -->
+  <button
+    id="readAloudBtn"
+    class="read-aloud-btn"
+    type="button"
+    aria-label="Read this screen aloud"
+    aria-pressed="false"
+    title="Read this screen aloud"
+  >
+    <svg
+      class="speaker-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.1-3.8v7.6A4.5 4.5 0 0 0 16.5 12Zm0-8.2v2.1a7 7 0 0 1 0 12.2v2.1a9 9 0 0 0 0-16.4Z"
+        fill="currentColor"
+      />
+    </svg>
+
+    <span class="read-label">READ ALOUD</span>
+  </button>
+
   <div class="stars" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">ZORBAX-9 RESEARCH DIVISION</div>
+
+    <div class="progress-wrap" aria-label="Mission progress">
+      <span>LISTENING DATA</span>
+
+      <div class="progress">
+        <div id="progressFill"></div>
+      </div>
+
+      <strong id="progressText">0%</strong>
+    </div>
+  </header>
+
 
   <main id="app">
 
-    <header class="topbar">
-      <div class="brand">
-        ZORBAX-9 RESEARCH DIVISION
-      </div>
-
-      <div class="progress-wrap" aria-label="Mission progress">
-        <span>LISTENING DATA</span>
-
-        <div class="progress">
-          <div id="progressFill"></div>
-        </div>
-
-        <strong id="progressText">0%</strong>
-      </div>
-    </header>
-
-    <!-- OPENING SCREEN -->
+    <!-- ======================================================
+         OPENING
+    ======================================================= -->
     <section class="screen active" id="bootScreen">
-      <div class="terminal card-shell">
+      <div class="terminal shell">
 
-        <p class="eyebrow">
-          INCOMING TRANSMISSION
-        </p>
+        <p class="eyebrow">INCOMING TRANSMISSION</p>
 
         <h1>
           GLORB &amp; THE<br>
@@ -64,12 +87,6 @@
           id="startBtn"
           class="button primary hidden"
           type="button"
-          onclick="startGlorbMission()"
-          style="
-            position: relative;
-            z-index: 9999;
-            pointer-events: auto;
-          "
         >
           OPEN TRANSMISSION
         </button>
@@ -77,23 +94,19 @@
       </div>
     </section>
 
-    <!-- STORY SCREEN -->
+
+    <!-- ======================================================
+         STORY
+    ======================================================= -->
     <section class="screen" id="storyScreen">
-      <div class="story-layout card-shell">
+      <div class="story-shell shell">
 
-        <div class="character-stage">
-          <div class="scanner-ring"></div>
-
+        <div class="story-visual">
           <img
             id="storyGlorb"
-            src="assets/glorb/welcome.webp"
-            alt="Glorb, a friendly hand-drawn alien"
+            src="assets/glorb/happy-face.webp"
+            alt="Glorb"
           >
-
-          <div class="specimen-tag">
-            GLORB<br>
-            <span>Chief Curiosity Officer</span>
-          </div>
         </div>
 
         <article class="dialogue-panel">
@@ -125,20 +138,18 @@
       </div>
     </section>
 
-    <!-- ACTIVE LISTENING TEACHING SCREEN -->
-    <section class="screen" id="learnScreen">
-      <div class="lesson-shell card-shell">
 
-        <header class="lesson-header">
+    <!-- ======================================================
+         TEACHING CARDS
+    ======================================================= -->
+    <section class="screen" id="learnScreen">
+      <div class="lesson-shell shell">
+
+        <header class="section-header">
 
           <div>
-            <p class="eyebrow">
-              RESEARCH BRIEFING
-            </p>
-
-            <h2>
-              WHAT ACTIVE LISTENING MEANS
-            </h2>
+            <p class="eyebrow">RESEARCH BRIEFING</p>
+            <h2>WHAT ACTIVE LISTENING MEANS</h2>
           </div>
 
           <div class="counter">
@@ -146,6 +157,7 @@
           </div>
 
         </header>
+
 
         <div class="teaching-layout">
 
@@ -156,6 +168,7 @@
               alt=""
             >
           </div>
+
 
           <div class="teaching-copy">
 
@@ -169,22 +182,24 @@
 
             <p id="teachingMeaning"></p>
 
+
             <div class="why-box">
               <strong>WHY IT HELPS</strong>
               <p id="teachingWhy"></p>
             </div>
 
+
             <div class="glorb-note">
 
               <img
-                id="miniGlorb"
-                src="assets/glorb/neutral.webp"
-                alt=""
+                src="assets/glorb/happy-face.webp"
+                alt="Glorb"
               >
 
               <p id="teachingGlorb"></p>
 
             </div>
+
 
             <div class="button-row">
 
@@ -209,23 +224,22 @@
           </div>
 
         </div>
+
       </div>
     </section>
 
-    <!-- MISSION HUB -->
-    <section class="screen" id="missionHub">
-      <div class="hub card-shell">
 
-        <header class="lesson-header">
+    <!-- ======================================================
+         MISSION CONTROL
+    ======================================================= -->
+    <section class="screen" id="missionHub">
+      <div class="hub shell">
+
+        <header class="section-header">
 
           <div>
-            <p class="eyebrow">
-              EARTH EXPERT CONSOLE
-            </p>
-
-            <h2>
-              LISTENING MISSION
-            </h2>
+            <p class="eyebrow">EARTH EXPERT CONSOLE</p>
+            <h2>LISTENING MISSION</h2>
           </div>
 
           <div class="scorebox">
@@ -235,14 +249,18 @@
 
         </header>
 
+
         <div class="objective">
+
           <strong>LEARNING INTENTION</strong>
 
           <p>
             We are learning to identify what active listening looks like,
             sounds like and feels like, and how our body helps us listen.
           </p>
+
         </div>
+
 
         <div class="mission-grid">
 
@@ -256,6 +274,7 @@
             <em id="m1Status">AVAILABLE</em>
           </button>
 
+
           <button
             class="mission-card locked"
             data-target="bodyScreen"
@@ -266,6 +285,7 @@
             <strong>BODY CALIBRATION</strong>
             <em id="m2Status">LOCKED</em>
           </button>
+
 
           <button
             class="mission-card locked"
@@ -283,311 +303,385 @@
       </div>
     </section>
 
-    <!-- MISSION 1: SORT ACTIVITY -->
-    <section class="screen" id="sortScreen">
-      <div class="game-shell card-shell">
 
-        <header class="game-header">
+    <!-- ======================================================
+         MISSION 01 — SORT ACTIVITY
+    ======================================================= -->
+    <section class="screen activity-screen" id="sortScreen">
+      <div class="game-shell shell">
 
-          <div>
-            <p class="eyebrow">
-              MISSION 01
-            </p>
-
-            <h2>
-              SORT ACTIVITY
-            </h2>
-          </div>
-
-          <button
-            class="text-button hubBtn"
-            type="button"
-          >
-            MISSION CONTROL
-          </button>
-
+        <header class="activity-titlebar">
+          <span class="activity-dot"></span>
+          <strong>SORT ACTIVITY</strong>
+          <span class="activity-rule"></span>
         </header>
 
-        <div class="glorb-prompt">
+
+        <div class="activity-intro">
 
           <img
-            src="assets/glorb/uneasy-face.webp"
-            alt="Glorb asking for help"
+            src="assets/glorb/happy-face.webp"
+            alt="Glorb"
           >
 
           <p>
-            <strong>GLORB:</strong>
+            <strong>GLORB:</strong><br>
+
             I need your help understanding human listening.
-            I have discovered it can <b>look like</b>,
-            <b>sound like</b> and <b>feel like</b> different things.
+            I have discovered it can
+            <b class="looks-word">look like</b>,
+            <b class="sounds-word">sound like</b> and
+            <b class="feels-word">feel like</b> different things.
+
             Can you help me sort each option into the correct category?
           </p>
 
         </div>
 
-        <p class="activity-instruction">
-          Drag each card into the correct category.
-          You can also tap a card and then tap a category.
-        </p>
 
         <div
           class="listening-sort"
           aria-label="Sort listening behaviours into looks like, sounds like and feels like"
         >
 
-          <div
+          <section
             class="listening-category looks"
             data-bucket="looks"
           >
-            <div class="category-top">
-              <img
-                src="assets/glorb/assets:glorb:looks-like.webp"
-                alt="Glorb using his eyes"
-              >
-              <div>
-                <h3>LOOKS LIKE</h3>
-                <p>What we see with our eyes.</p>
-              </div>
-            </div>
-            <div class="drop-items">
-              <span class="drop-placeholder">DRAG CARDS HERE</span>
-            </div>
-          </div>
 
-          <div
+            <img
+              src="assets/glorb/assets:glorb:looks-like.webp"
+              alt="Looks like — what we see with our eyes"
+            >
+
+            <div class="drop-items">
+              <span class="drop-placeholder">
+                DRAG CARDS HERE
+              </span>
+            </div>
+
+          </section>
+
+
+          <section
             class="listening-category sounds"
             data-bucket="sounds"
           >
-            <div class="category-top">
-              <img
-                src="assets/glorb/assets:glorb:sounds-like.webp"
-                alt="Glorb listening with his ears"
-              >
-              <div>
-                <h3>SOUNDS LIKE</h3>
-                <p>What we hear with our ears.</p>
-              </div>
-            </div>
-            <div class="drop-items">
-              <span class="drop-placeholder">DRAG CARDS HERE</span>
-            </div>
-          </div>
 
-          <div
+            <img
+              src="assets/glorb/assets:glorb:sounds-like.webp"
+              alt="Sounds like — what we hear with our ears"
+            >
+
+            <div class="drop-items">
+              <span class="drop-placeholder">
+                DRAG CARDS HERE
+              </span>
+            </div>
+
+          </section>
+
+
+          <section
             class="listening-category feels"
             data-bucket="feels"
           >
-            <div class="category-top">
-              <img
-                src="assets/glorb/assets:glorb:feels-like.webp"
-                alt="Glorb showing how listening feels"
-              >
-              <div>
-                <h3>FEELS LIKE</h3>
-                <p>What we feel in our heart and body.</p>
-              </div>
-            </div>
+
+            <img
+              src="assets/glorb/assets:glorb:feels-like.webp"
+              alt="Feels like — what we feel in our heart and body"
+            >
+
             <div class="drop-items">
-              <span class="drop-placeholder">DRAG CARDS HERE</span>
+              <span class="drop-placeholder">
+                DRAG CARDS HERE
+              </span>
             </div>
-          </div>
+
+          </section>
 
         </div>
 
-        <div class="sort-bank-section">
-          <h3>DRAG THE OPTIONS BELOW INTO THE CORRECT CATEGORY</h3>
-          <div
-            id="sortBank"
-            class="visual-card-bank"
-          ></div>
+
+        <div class="bank-heading">
+          DRAG THE OPTIONS BELOW INTO THE CORRECT CATEGORY ↗
         </div>
+
 
         <div
-          id="sortFeedback"
-          class="feedback"
-          aria-live="polite"
-        >
-          Sort each listening behaviour into the correct category.
+          id="sortBank"
+          class="visual-card-bank"
+        ></div>
+
+
+        <div class="activity-footer">
+
+          <button
+            class="back-button hubBtn"
+            type="button"
+          >
+            ← &nbsp; BACK TO MISSION
+          </button>
+
+          <div
+            id="sortFeedback"
+            class="activity-feedback"
+            aria-live="polite"
+          >
+            Sort each listening behaviour into the correct category.
+          </div>
+
+          <button
+            id="checkSort"
+            class="check-button"
+            type="button"
+            disabled
+          >
+            CHECK MY ANSWERS ✓
+          </button>
+
         </div>
 
       </div>
     </section>
 
-    <!-- MISSION 2: BODY CALIBRATION -->
-    <section class="screen" id="bodyScreen">
-      <div class="game-shell card-shell">
 
-        <header class="game-header">
+    <!-- ======================================================
+         MISSION 02 — BODY CALIBRATION
+    ======================================================= -->
+    <section class="screen activity-screen" id="bodyScreen">
+      <div class="game-shell shell">
 
-          <div>
-            <p class="eyebrow">
-              MISSION 02
-            </p>
-
-            <h2>
-              BODY CALIBRATION
-            </h2>
-          </div>
-
-          <button
-            class="text-button hubBtn"
-            type="button"
-          >
-            MISSION CONTROL
-          </button>
-
+        <header class="activity-titlebar">
+          <span class="activity-dot"></span>
+          <strong>BODY CALIBRATION</strong>
+          <span class="activity-rule"></span>
         </header>
 
-        <div class="glorb-prompt">
+
+        <div class="activity-intro body-intro">
 
           <img
-            src="assets/glorb/surprised.webp"
-            alt="Glorb asking for help"
+            src="assets/glorb/happy-face.webp"
+            alt="Glorb"
           >
 
           <p>
-            <strong>GLORB:</strong>
-            I need your help understanding what my body should do
-            when I am listening. Drag each instruction to the
-            correct part of my body.
+            <strong>GLORB:</strong><br>
+
+            I need your help understanding my body when I am listening.
+            Which positions help me listen well?
+
+            Drag and drop the options to the correct spots.
           </p>
 
         </div>
 
-        <div class="body-calibration-layout">
 
-          <div class="body-diagram body-map">
+        <div class="body-layout">
+
+          <div
+            class="body-map"
+            aria-label="Glorb body calibration diagram"
+          >
 
             <img
-              class="body-map-image"
               src="assets/glorb/body-calibration-upright.webp"
-              alt="Glorb body calibration diagram with seven empty answer boxes"
+              alt="Glorb with seven empty listening-body boxes"
             >
 
-            <button class="body-zone head" data-part="head" type="button">
-              <span>HEAD</span><small></small>
-            </button>
 
-            <button class="body-zone eyes" data-part="eyes" type="button">
-              <span>EYES</span><small></small>
-            </button>
+            <div
+              class="body-zone head"
+              data-part="head"
+            >
+              <span>HEAD</span>
+              <small></small>
+            </div>
 
-            <button class="body-zone ears" data-part="ears" type="button">
-              <span>EARS</span><small></small>
-            </button>
 
-            <button class="body-zone mouth" data-part="mouth" type="button">
-              <span>MOUTH</span><small></small>
-            </button>
+            <div
+              class="body-zone eyes"
+              data-part="eyes"
+            >
+              <span>EYES</span>
+              <small></small>
+            </div>
 
-            <button class="body-zone body" data-part="body" type="button">
-              <span>BODY</span><small></small>
-            </button>
 
-            <button class="body-zone hands" data-part="hands" type="button">
-              <span>HANDS</span><small></small>
-            </button>
+            <div
+              class="body-zone ears"
+              data-part="ears"
+            >
+              <span>EARS</span>
+              <small></small>
+            </div>
 
-            <button class="body-zone feet" data-part="feet" type="button">
-              <span>FEET</span><small></small>
-            </button>
+
+            <div
+              class="body-zone mouth"
+              data-part="mouth"
+            >
+              <span>MOUTH</span>
+              <small></small>
+            </div>
+
+
+            <div
+              class="body-zone body"
+              data-part="body"
+            >
+              <span>BODY</span>
+              <small></small>
+            </div>
+
+
+            <div
+              class="body-zone hands"
+              data-part="hands"
+            >
+              <span>HANDS</span>
+              <small></small>
+            </div>
+
+
+            <div
+              class="body-zone feet"
+              data-part="feet"
+            >
+              <span>FEET</span>
+              <small></small>
+            </div>
 
           </div>
 
-          <div class="body-bank">
-            <h3>DRAG THE OPTIONS BELOW</h3>
+
+          <aside class="body-bank">
+
+            <h3>▸ DRAG THE OPTIONS BELOW</h3>
 
             <p>
-              Drag an instruction to the matching body part,
-              or tap an instruction and then tap the body part.
+              Drag an instruction into the matching body-part box,
+              or tap an instruction and then tap the box.
             </p>
 
             <div id="bodyCards"></div>
-          </div>
+
+          </aside>
 
         </div>
 
-        <div
-          id="bodyFeedback"
-          class="feedback"
-          aria-live="polite"
-        >
-          Seven body parts need listening instructions.
+
+        <div class="activity-footer">
+
+          <button
+            class="back-button hubBtn"
+            type="button"
+          >
+            ← &nbsp; BACK TO MISSION
+          </button>
+
+          <div
+            id="bodyFeedback"
+            class="activity-feedback"
+            aria-live="polite"
+          >
+            Seven body parts need listening instructions.
+          </div>
+
+          <button
+            id="checkBody"
+            class="check-button"
+            type="button"
+            disabled
+          >
+            CHECK MY ANSWERS ✓
+          </button>
+
         </div>
 
       </div>
     </section>
 
-    <!-- MISSION 3: APPLY LISTENING -->
-    <section class="screen" id="applyScreen">
-      <div class="game-shell card-shell">
 
-        <header class="game-header">
+    <!-- ======================================================
+         MISSION 03 — HELP GLORB TRY AGAIN
+    ======================================================= -->
+    <section class="screen activity-screen" id="applyScreen">
+      <div class="game-shell shell">
 
-          <div>
-            <p class="eyebrow">
-              MISSION 03
-            </p>
-
-            <h2>
-              HELP GLORB TRY AGAIN
-            </h2>
-          </div>
-
-          <button
-            class="text-button hubBtn"
-            type="button"
-          >
-            MISSION CONTROL
-          </button>
-
+        <header class="activity-titlebar">
+          <span class="activity-dot"></span>
+          <strong>HELP GLORB TRY AGAIN</strong>
+          <span class="activity-rule"></span>
         </header>
 
-        <div class="scenario-card">
+
+        <div class="apply-scenario">
 
           <img
-            id="applyGlorb"
-            src="assets/glorb/uneasy.webp"
-            alt="Glorb feeling unsure"
+            src="assets/glorb/assets:glorb:unsure.png"
+            alt="Glorb looking unsure"
           >
 
           <div>
-            <p class="speaker">GLORB</p>
+
+            <p class="speaker">
+              GLORB
+            </p>
 
             <p>
-              “Pip is coming back. Their dog is still sick. I have one cloud
-              fact ready, but I now suspect this is not the correct moment.
+              “Pip is coming back. Their dog is still sick.
+              I have one cloud fact ready, but I now suspect
+              this is not the correct moment.
+
               What should I do?”
             </p>
+
           </div>
 
         </div>
 
+
         <h3 class="instruction">
           Choose the four actions Glorb should use.
         </h3>
+
 
         <div
           id="actionChoices"
           class="choice-grid"
         ></div>
 
-        <button
-          id="checkActions"
-          class="button primary"
-          type="button"
-          disabled
-        >
-          CHECK MY PLAN
-        </button>
 
-        <div
-          id="actionFeedback"
-          class="feedback"
-          aria-live="polite"
-        >
-          Select four actions.
+        <div class="activity-footer">
+
+          <button
+            class="back-button hubBtn"
+            type="button"
+          >
+            ← &nbsp; BACK TO MISSION
+          </button>
+
+          <div
+            id="actionFeedback"
+            class="activity-feedback"
+            aria-live="polite"
+          >
+            Select four actions.
+          </div>
+
+          <button
+            id="checkActions"
+            class="check-button"
+            type="button"
+            disabled
+          >
+            CHECK MY PLAN ✓
+          </button>
+
         </div>
+
 
         <div
           id="replyStage"
@@ -605,11 +699,11 @@
 
           <button
             id="checkReply"
-            class="button primary"
+            class="check-button"
             type="button"
             disabled
           >
-            SEND REPLY
+            SEND REPLY ✓
           </button>
 
         </div>
@@ -617,25 +711,22 @@
       </div>
     </section>
 
-    <!-- FINAL SCREEN -->
+
+    <!-- ======================================================
+         FINAL
+    ======================================================= -->
     <section class="screen" id="finalScreen">
-      <div class="story-layout card-shell">
+      <div class="story-shell shell">
 
-        <div class="character-stage celebration">
-
-          <div class="scanner-ring success"></div>
+        <div class="story-visual final-visual">
 
           <img
-            src="assets/glorb/excited.webp"
-            alt="Glorb celebrating"
+            src="assets/glorb/happy-face.webp"
+            alt="Glorb smiling"
           >
 
-          <div class="specimen-tag success-tag">
-            LISTENING<br>
-            <span>CALIBRATED</span>
-          </div>
-
         </div>
+
 
         <article class="dialogue-panel final-paper">
 
@@ -649,8 +740,9 @@
 
           <p>
             <strong>Glorb:</strong>
-            “Pip, I would like to try that conversation again. I am facing
-            you. I will wait until you finish. Is your dog feeling better?”
+            “Pip, I would like to try that conversation again.
+            I am facing you. I will wait until you finish.
+            Is your dog feeling better?”
           </p>
 
           <p>
@@ -660,13 +752,13 @@
 
           <p>
             <strong>Glorb:</strong>
-            “They are still talking to me. This is going well. My ears are
-            currently 83% happier.”
+            “Thank-you so much human!! I now have made a connection
+            with Pip through using my active listening skills!!”
           </p>
 
           <div class="final-message">
-            You taught Glorb that listening means showing attention with your
-            eyes, ears, body and words.
+            You taught Glorb that listening means showing attention
+            with your eyes, ears, body and words.
           </div>
 
           <button
@@ -684,32 +776,6 @@
 
   </main>
 
-  <script src="script.js?v=8"></script>
-  <script src="fixes.js?v=2"></script>
-
-  <script>
-    window.startGlorbMission = function () {
-      const bootScreen = document.getElementById('bootScreen');
-      const storyScreen = document.getElementById('storyScreen');
-
-      if (bootScreen) {
-        bootScreen.classList.remove('active');
-      }
-
-      if (storyScreen) {
-        storyScreen.classList.add('active');
-      }
-
-      if (typeof runDialogue === 'function') {
-        runDialogue();
-      }
-
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    };
-  </script>
-
+  <script src="script.js?v=14"></script>
 </body>
 </html>
