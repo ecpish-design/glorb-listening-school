@@ -1,0 +1,7 @@
+ADD AFTER style.css IN <head>:
+
+<link rel="stylesheet" href="fixes.css?v=12">
+
+ADD AFTER script.js AT THE BOTTOM OF <body>:
+
+<script src="fixes.js?v=12"></script>
