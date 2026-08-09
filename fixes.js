@@ -417,6 +417,34 @@
   }
 
   /* =========================================================
+     BODY CALIBRATION — UPDATED BODY WORDING
+  ========================================================= */
+
+  if (typeof bodyData !== 'undefined' && Array.isArray(bodyData)) {
+    bodyData.forEach(item => {
+      const currentText =
+        item.text ??
+        item.label ??
+        item.instruction ??
+        item.copy ??
+        '';
+
+      const isBodyItem =
+        item.part === 'body' ||
+        item.target === 'body' ||
+        item.bodyPart === 'body' ||
+        /face the speaker and stay focused/i.test(currentText);
+
+      if (!isBodyItem) return;
+
+      if ('text' in item) item.text = 'Face the speaker and keep my body calm.';
+      if ('label' in item) item.label = 'Face the speaker and keep my body calm.';
+      if ('instruction' in item) item.instruction = 'Face the speaker and keep my body calm.';
+      if ('copy' in item) item.copy = 'Face the speaker and keep my body calm.';
+    });
+  }
+
+  /* =========================================================
      BODY CALIBRATION — WRONG ANSWERS CAN BE CHANGED
   ========================================================= */
 
