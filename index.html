@@ -9,6 +9,137 @@
 
   <link rel="stylesheet" href="style.css?v=27">
   <link rel="stylesheet" href="fixes.css?v=27">
+
+  <style id="mission-briefing-style">
+    .mission-briefing-shell{
+      overflow:hidden;
+    }
+
+    .mission-briefing-visual{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:clamp(24px,5vw,64px);
+    }
+
+    .mission-briefing-visual img{
+      display:block;
+      width:min(72%,380px);
+      height:auto;
+      max-height:500px;
+      object-fit:contain;
+      object-position:center;
+    }
+
+    .mission-briefing-panel{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .mission-briefing-panel .dialogue-text{
+      min-height:0;
+    }
+
+    .mission-intention{
+      margin:6px 0 0;
+      font-size:clamp(1.05rem,1.7vw,1.35rem);
+      line-height:1.65;
+    }
+
+    .mission-intention strong{
+      font-weight:800;
+    }
+
+    .mission-success-box{
+      margin:24px 0 28px;
+      padding:20px 22px;
+      border-left:4px solid #f4784a;
+      background:rgba(244,120,74,.09);
+      color:#20242d;
+    }
+
+    .mission-success-box > span{
+      display:block;
+      margin-bottom:12px;
+      font-family:"IBM Plex Mono", monospace;
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.1em;
+    }
+
+    .mission-success-box ul{
+      display:grid;
+      gap:10px;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+
+    .mission-success-box li{
+      position:relative;
+      padding-left:27px;
+      font-size:clamp(.95rem,1.4vw,1.12rem);
+      font-weight:650;
+      line-height:1.45;
+    }
+
+    .mission-success-box li::before{
+      content:"✓";
+      position:absolute;
+      left:0;
+      top:0;
+      color:#f4784a;
+      font-weight:900;
+    }
+
+    @media (max-width:900px){
+      .mission-briefing-shell{
+        grid-template-columns:1fr !important;
+      }
+
+      .mission-briefing-visual{
+        min-height:300px;
+        max-height:390px;
+        padding:18px 20px 8px;
+      }
+
+      .mission-briefing-visual img{
+        width:min(58%,280px);
+        max-height:280px;
+      }
+
+      .mission-briefing-panel{
+        min-height:auto !important;
+        padding:28px 24px 34px !important;
+      }
+
+      .mission-success-box{
+        margin:18px 0 22px;
+      }
+    }
+
+    @media (max-width:600px){
+      .mission-briefing-visual{
+        min-height:220px;
+        max-height:280px;
+      }
+
+      .mission-briefing-visual img{
+        width:min(60%,215px);
+        max-height:210px;
+      }
+
+      .mission-briefing-panel{
+        padding:24px 19px 30px !important;
+      }
+
+      .mission-success-box{
+        padding:16px 17px;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -152,6 +283,63 @@
 
 
     <!-- ======================================================
+         MISSION BRIEFING / LEARNING INTENTION
+    ======================================================= -->
+    <section class="screen" id="missionBriefingScreen">
+      <div class="story-shell shell mission-briefing-shell">
+
+        <div class="story-visual mission-briefing-visual">
+          <img
+            src="assets/glorb-aug26-refresh/aug26-glorb-pointing-up.png"
+            alt="Glorb presenting the listening mission"
+          >
+        </div>
+
+        <article class="dialogue-panel mission-briefing-panel">
+
+          <p class="eyebrow dark">
+            MISSION BRIEFING // ACTIVE LISTENING
+          </p>
+
+          <div class="speaker">
+            LEARNING INTENTION
+          </div>
+
+          <div class="dialogue-text">
+
+            <p class="mission-intention">
+              We are learning how to use our
+              <strong>eyes, ears, body and words</strong>
+              to show someone we are listening.
+            </p>
+
+            <div class="mission-success-box">
+              <span>BY THE END OF THIS MISSION, YOU CAN:</span>
+
+              <ul>
+                <li>recognise active listening</li>
+                <li>show a listening body</li>
+                <li>choose what to do in a conversation</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <button
+            id="beginTrainingBtn"
+            class="button ink"
+            type="button"
+          >
+            BEGIN TRAINING
+          </button>
+
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- ======================================================
          TEACHING CARDS
     ======================================================= -->
     <section class="screen" id="learnScreen">
@@ -283,18 +471,6 @@
           </div>
 
         </header>
-
-
-        <div class="objective">
-
-          <strong>LEARNING INTENTION</strong>
-
-          <p>
-            We are learning to identify what active listening looks like,
-            sounds like and feels like, and how our body helps us listen.
-          </p>
-
-        </div>
 
 
         <div class="mission-grid">
@@ -792,5 +968,39 @@
 
   <script src="script.js?v=27"></script>
   <script src="fixes.js?v=27"></script>
+
+  <script id="mission-briefing-flow">
+    (() => {
+      const nextDialogueBtn = document.getElementById('nextDialogue');
+      const beginTrainingBtn = document.getElementById('beginTrainingBtn');
+
+      /*
+        After Glorb asks the Earth Expert for help,
+        show the Learning Intention before the research cards.
+        This runs after script.js and fixes.js so it becomes
+        the final navigation behaviour.
+      */
+      if (nextDialogueBtn) {
+        nextDialogueBtn.onclick = () => {
+          if (dialogueIndex < dialogue.length - 1) {
+            dialogueIndex += 1;
+            runDialogue();
+          } else {
+            setProgress(12);
+            show('missionBriefingScreen');
+          }
+        };
+      }
+
+      if (beginTrainingBtn) {
+        beginTrainingBtn.onclick = () => {
+          setProgress(15);
+          show('learnScreen');
+          renderTeaching();
+        };
+      }
+    })();
+  </script>
+
 </body>
 </html>
