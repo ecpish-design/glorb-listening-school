@@ -1,0 +1,191 @@
+/* =========================================================
+   GLORB — LEARNING INTENTION FINAL LAYOUT FIX
+   Load AFTER style.css and fixes.css
+========================================================= */
+
+#missionBriefingScreen .mission-briefing-shell{
+  display:grid !important;
+  grid-template-columns:minmax(360px,1.05fr) minmax(420px,.95fr) !important;
+  min-height:620px !important;
+  overflow:hidden !important;
+}
+
+/* LEFT SIDE — GLORB */
+#missionBriefingScreen .mission-briefing-visual{
+  min-height:620px !important;
+  padding:26px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+#missionBriefingScreen .mission-briefing-visual img{
+  display:block !important;
+  width:min(72%,430px) !important;
+  height:auto !important;
+  max-width:430px !important;
+  max-height:520px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  transform:none !important;
+}
+
+/* RIGHT SIDE — SAME PROPORTIONS AS THE OTHER STORY PAGES */
+#missionBriefingScreen .mission-briefing-panel{
+  min-height:620px !important;
+  padding:clamp(34px,5vw,58px) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+}
+
+/* THIS IS THE IMPORTANT FIX:
+   do NOT inherit dialogue-text's pre-wrap spacing */
+#missionBriefingScreen .mission-briefing-copy,
+#missionBriefingScreen .dialogue-text{
+  min-height:0 !important;
+  white-space:normal !important;
+}
+
+/* LEARNING INTENTION */
+#missionBriefingScreen .learning-intention-copy{
+  margin:28px 0 36px !important;
+}
+
+#missionBriefingScreen .learning-intro{
+  margin:0 0 14px !important;
+  font-family:"IBM Plex Mono",monospace !important;
+  font-size:clamp(1.15rem,1.8vw,1.55rem) !important;
+  font-weight:500 !important;
+  line-height:1.45 !important;
+  white-space:normal !important;
+}
+
+#missionBriefingScreen .learning-main{
+  margin:0 !important;
+  font-family:"IBM Plex Mono",monospace !important;
+  font-size:clamp(1.15rem,1.8vw,1.55rem) !important;
+  font-weight:500 !important;
+  line-height:1.55 !important;
+  white-space:normal !important;
+}
+
+#missionBriefingScreen .learning-main strong{
+  font-weight:800 !important;
+}
+
+/* SUCCESS CRITERIA */
+#missionBriefingScreen .mission-success-box{
+  margin:0 0 26px !important;
+  padding:22px 24px !important;
+  min-height:0 !important;
+  border-left:4px solid #f4784a !important;
+  background:rgba(244,120,74,.09) !important;
+}
+
+#missionBriefingScreen .mission-success-box > span{
+  display:block !important;
+  margin:0 0 18px !important;
+  font-family:"IBM Plex Mono",monospace !important;
+  font-size:.74rem !important;
+  font-weight:800 !important;
+  line-height:1.5 !important;
+  letter-spacing:.08em !important;
+  white-space:normal !important;
+}
+
+#missionBriefingScreen .mission-success-box ul{
+  display:grid !important;
+  gap:10px !important;
+  margin:0 !important;
+  padding:0 !important;
+  list-style:none !important;
+}
+
+#missionBriefingScreen .mission-success-box li{
+  position:relative !important;
+  margin:0 !important;
+  padding-left:28px !important;
+  font-family:"IBM Plex Mono",monospace !important;
+  font-size:clamp(.95rem,1.25vw,1.08rem) !important;
+  font-weight:600 !important;
+  line-height:1.45 !important;
+  white-space:normal !important;
+}
+
+#missionBriefingScreen .mission-success-box li::before{
+  content:"✓" !important;
+  position:absolute !important;
+  left:0 !important;
+  top:0 !important;
+  color:#f4784a !important;
+  font-weight:900 !important;
+}
+
+#missionBriefingScreen #beginTrainingBtn{
+  align-self:flex-start !important;
+}
+
+/* TABLET */
+@media (max-width:900px){
+  #missionBriefingScreen .mission-briefing-shell{
+    grid-template-columns:1fr !important;
+    min-height:0 !important;
+  }
+
+  #missionBriefingScreen .mission-briefing-visual{
+    min-height:260px !important;
+    height:300px !important;
+    padding:16px !important;
+  }
+
+  #missionBriefingScreen .mission-briefing-visual img{
+    width:min(54%,245px) !important;
+    max-height:260px !important;
+  }
+
+  #missionBriefingScreen .mission-briefing-panel{
+    min-height:0 !important;
+    padding:28px 24px 34px !important;
+  }
+
+  #missionBriefingScreen .learning-intention-copy{
+    margin:22px 0 28px !important;
+  }
+
+  #missionBriefingScreen .learning-intro,
+  #missionBriefingScreen .learning-main{
+    font-size:1.08rem !important;
+    line-height:1.5 !important;
+  }
+}
+
+/* MOBILE */
+@media (max-width:520px){
+  #missionBriefingScreen .mission-briefing-visual{
+    min-height:190px !important;
+    height:215px !important;
+  }
+
+  #missionBriefingScreen .mission-briefing-visual img{
+    width:min(58%,190px) !important;
+    max-height:190px !important;
+  }
+
+  #missionBriefingScreen .mission-briefing-panel{
+    padding:24px 18px 28px !important;
+  }
+
+  #missionBriefingScreen .learning-intro,
+  #missionBriefingScreen .learning-main{
+    font-size:1rem !important;
+  }
+
+  #missionBriefingScreen .mission-success-box{
+    padding:18px !important;
+  }
+
+  #missionBriefingScreen .mission-success-box li{
+    font-size:.92rem !important;
+  }
+}

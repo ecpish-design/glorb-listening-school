@@ -1,0 +1,24 @@
+<!-- Replace ONLY the current content inside missionBriefingScreen's .dialogue-text with this -->
+
+<div class="dialogue-text mission-briefing-copy">
+
+  <div class="learning-intention-copy">
+    <p class="learning-intro">We are learning how to:</p>
+
+    <p class="learning-main">
+      use our <strong>eyes, ears, body and words</strong><br>
+      to show someone we are listening.
+    </p>
+  </div>
+
+  <div class="mission-success-box">
+    <span>BY THE END OF THIS MISSION, YOU WILL BE ABLE TO:</span>
+
+    <ul>
+      <li>recognise active listening</li>
+      <li>show a listening body</li>
+      <li>choose what to do in a conversation</li>
+    </ul>
+  </div>
+
+</div>
