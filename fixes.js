@@ -99,11 +99,11 @@
     .listening-category > .category-concept-image {
       display: block !important;
       width: 100% !important;
-      height: 185px !important;
+      height: 230px !important;
       object-fit: contain !important;
       object-position: center center !important;
-      margin: 0 0 4px !important;
-      background: #fffdf8;
+      margin: 0 0 6px !important;
+      background: transparent !important;
     }
 
     /* The artwork already contains the title + explanation. Keep the DOM text
@@ -277,15 +277,15 @@
   /* Restore LOOKS LIKE / SOUNDS LIKE / FEELS LIKE artwork. */
   const categoryVisuals = {
     looks: {
-      src: 'assets/glorb/looks-like.webp',
+      src: 'assets/glorb/aug26-looks-like-wide.png',
       alt: 'Looks Like — what we see with our eyes.'
     },
     sounds: {
-      src: 'assets/glorb/sounds-like.webp',
+      src: 'assets/glorb/aug26-sounds-like-wide.png',
       alt: 'Sounds Like — what we hear with our ears.'
     },
     feels: {
-      src: 'assets/glorb/feels-like.webp',
+      src: 'assets/glorb/aug26-feels-like-wide.png',
       alt: 'Feels Like — what we feel in our heart and body.'
     }
   };
@@ -474,6 +474,81 @@
       });
     };
   }
+
+  /* =========================================================
+     APPLY SCREEN — UPDATE THE FOUR CORRECT ACTIONS
+  ========================================================= */
+
+  function patchApplyChoices() {
+    const buttons = document.querySelectorAll('#actionChoices .choice');
+    if (!buttons.length) return;
+
+    buttons.forEach(button => {
+      const label = button.textContent.trim();
+
+      if (label === 'Face Pip') {
+        button.textContent = 'Listen to what Pip is saying';
+        button.dataset.correct = 'true';
+      }
+
+      if (label === 'Wait until Pip finishes') {
+        button.textContent = 'Wait until she finishes';
+        button.dataset.correct = 'true';
+      }
+
+      if (label === 'Look at Pip, not the sky') {
+        button.dataset.correct = 'true';
+      }
+
+      if (label === 'Ask about the dog') {
+        button.dataset.correct = 'true';
+      }
+
+      if (label === 'Share the cloud fact immediately') {
+        button.dataset.correct = 'false';
+      }
+
+      if (label === 'Plan a better story while Pip talks') {
+        button.dataset.correct = 'false';
+      }
+
+      if (label === 'Walk away before Pip finishes') {
+        button.dataset.correct = 'false';
+      }
+
+      if (label === 'Look for a paper aeroplane') {
+        button.dataset.correct = 'false';
+      }
+    });
+
+    const checkActionsBtn = document.getElementById('checkActions');
+
+    if (checkActionsBtn && !checkActionsBtn.dataset.aug26Patched) {
+      checkActionsBtn.dataset.aug26Patched = 'true';
+
+      const originalCheck = checkActionsBtn.onclick;
+
+      checkActionsBtn.onclick = function(event) {
+        if (typeof originalCheck === 'function') {
+          originalCheck.call(this, event);
+        }
+
+        const feedback = document.getElementById('actionFeedback');
+        const replyStage = document.getElementById('replyStage');
+
+        if (
+          replyStage &&
+          !replyStage.classList.contains('hidden') &&
+          feedback
+        ) {
+          feedback.textContent =
+            'PLAN APPROVED — Glorb will look at Pip, listen to what Pip is saying, wait until she finishes and ask about the dog.';
+        }
+      };
+    }
+  }
+
+  patchApplyChoices();
 
   /* =========================================================
      FINAL SCREEN — END ON PIP'S STATEMENT
