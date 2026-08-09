@@ -412,20 +412,7 @@ function getCurrentScreenText() {
       Pip says.
       A little.
       Thanks for asking.
-
-      Glorb says.
-      Thank you so much, human.
-      I now have made a connection
-      with Pip through using
-      my active listening skills.
-
-      You taught Glorb that listening
-      means showing attention
-      with your eyes,
-      ears,
-      body,
-      and words.
-      `
+`
     );
   }
 
@@ -1391,7 +1378,7 @@ const teaching = [
     why:
       'Waiting prevents interruptions and gives the speaker time to explain.',
     glorb:
-      'Sentence completion must occur before cloud deployment.',
+      'Sentence completion must occur before my speech deployment.',
     glorbImg:
       'assets/glorb/wait-before-speaking-note.png'
   },
@@ -2048,7 +2035,7 @@ const bodyData = [
 
   {
     text:
-      'Face the speaker and stay focused.',
+      'Face the speaker and keep my body calm.',
     part:
       'body'
   },
@@ -2389,7 +2376,7 @@ renderBody();
 
 const actions = [
   [
-    'Face Pip',
+    'Listen to what Pip is saying',
     true
   ],
 
@@ -2399,7 +2386,7 @@ const actions = [
   ],
 
   [
-    'Wait until Pip finishes',
+    'Wait until she finishes',
     true
   ],
 
@@ -2517,7 +2504,7 @@ $('#checkActions').onclick = () => {
       });
 
     $('#actionFeedback').textContent =
-      'PLAN APPROVED — Glorb will face Pip, look at her, wait until she finishes and ask about her dog.';
+      'PLAN APPROVED — Glorb will look at Pip, listen to what she is saying, wait until she finishes and ask about her dog.';
 
     $('#replyStage')
       .classList
