@@ -1,21 +1,23 @@
-# Glorb // Earth Signals Mission
+# Glorb & The Listening Mission
 
-GitHub Pages-ready interactive comic and signal sorting mission.
+A static HTML/CSS/JavaScript classroom game designed for GitHub Pages.
 
-## Student flow
-1. Enter researcher name.
-2. Follow Glorb's story with clear page tasks, Read Aloud and Zoom Page.
-3. Open the four incident logs and four signal guides.
-4. Sort 20 visual clues into Low, Steady, Rising and Signal Overload.
-5. Use Help Me, Glorb, clue zoom and larger clue mode when needed.
-6. Generate the four completed reports.
-7. Generate a personalised mission certificate.
+## Upload to GitHub
 
-## Certificate
-The final certificate includes the student's name, mission description, learning intentions, ability statement and completion date. It can be:
-- printed / saved as PDF
-- downloaded as PNG
-- shared through the browser when Web Share is supported
+1. Open your new repository.
+2. Choose **Add file → Upload files**.
+3. Upload everything inside this folder, keeping the `assets` folders intact.
+4. Commit the files.
+5. Open **Settings → Pages**.
+6. Under **Build and deployment**, choose **Deploy from a branch**.
+7. Select `main` and `/ (root)`, then save.
 
-## GitHub Pages
-Upload the contents of this folder to the repository root. Keep the folder name `assests` exactly as supplied because the code intentionally references that spelling.
+## Project structure
+
+- `index.html` — game screens and interface
+- `style.css` — futuristic visual system and responsive layout
+- `script.js` — story, teaching cards, drag-and-drop activities and scoring
+- `assets/glorb/` — Glorb poses and expressions
+- `assets/listening/` — active-listening teaching cards
+
+The original `glorb-listening-mission` repository does not need to be changed.
