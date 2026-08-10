@@ -1,1025 +1,128 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07111f">
-
-  <title>Glorb &amp; The Listening Mission</title>
-
-  <link rel="stylesheet" href="style.css?v=29">
-  <link rel="stylesheet" href="fixes.css?v=29">
-
-  <style id="mission-briefing-style">
-    /* Mission briefing uses the same two-column story layout as the other intro pages.
-       These rules only make the learning intention readable and responsive. */
-
-    #missionBriefingScreen .mission-briefing-shell{
-      overflow:hidden;
-    }
-
-    #missionBriefingScreen .mission-briefing-visual{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:620px;
-      padding:26px;
-    }
-
-    #missionBriefingScreen .mission-briefing-visual img{
-      display:block;
-      width:min(68%,420px);
-      height:auto;
-      max-height:500px;
-      object-fit:contain;
-      object-position:center center;
-      margin:auto;
-    }
-
-    #missionBriefingScreen .mission-briefing-panel{
-      min-height:620px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-
-    #missionBriefingScreen .mission-briefing-copy{
-      width:100%;
-      max-width:610px;
-      min-height:0;
-      margin:20px 0 26px;
-      padding:0;
-      white-space:normal !important;
-    }
-
-    #missionBriefingScreen .mission-intention{
-      display:block;
-      margin:0 0 28px;
-      padding:0;
-      white-space:normal !important;
-      font:500 clamp(1rem,1.8vw,1.32rem)/1.65 "IBM Plex Mono", monospace;
-      color:#262a31;
-      text-align:left;
-    }
-
-    #missionBriefingScreen .mission-intention strong{
-      display:inline;
-      font-weight:800;
-    }
-
-    #missionBriefingScreen .mission-success-box{
-      width:100%;
-      margin:0 0 2px;
-      padding:20px 22px;
-      border-left:4px solid #f4784a;
-      background:rgba(244,120,74,.09);
-      color:#20242d;
-      white-space:normal !important;
-    }
-
-    #missionBriefingScreen .mission-success-box > span{
-      display:block;
-      margin:0 0 14px;
-      font:800 .72rem/1.4 "IBM Plex Mono", monospace;
-      letter-spacing:.1em;
-    }
-
-    #missionBriefingScreen .mission-success-box ul{
-      display:grid;
-      gap:10px;
-      margin:0;
-      padding:0;
-      list-style:none;
-    }
-
-    #missionBriefingScreen .mission-success-box li{
-      position:relative;
-      margin:0;
-      padding-left:27px;
-      white-space:normal !important;
-      font:650 clamp(.95rem,1.35vw,1.08rem)/1.45 Inter,Arial,sans-serif;
-    }
-
-    #missionBriefingScreen .mission-success-box li::before{
-      content:"✓";
-      position:absolute;
-      left:0;
-      top:0;
-      color:#f4784a;
-      font-weight:900;
-    }
-
-    #missionBriefingScreen #beginTrainingBtn{
-      margin-top:0;
-    }
-
-    @media (max-width:900px){
-      #missionBriefingScreen .story-shell{
-        grid-template-columns:1fr !important;
-      }
-
-      #missionBriefingScreen .mission-briefing-visual{
-        min-height:280px !important;
-        max-height:340px;
-        padding:20px !important;
-      }
-
-      #missionBriefingScreen .mission-briefing-visual img{
-        width:min(56%,280px);
-        max-height:280px;
-      }
-
-      #missionBriefingScreen .mission-briefing-panel{
-        min-height:auto !important;
-        padding:30px 24px 34px !important;
-      }
-
-      #missionBriefingScreen .mission-briefing-copy{
-        max-width:none;
-        margin:18px 0 22px;
-      }
-    }
-
-    @media (max-width:600px){
-      #missionBriefingScreen .mission-briefing-visual{
-        min-height:220px !important;
-        max-height:260px;
-        padding:16px 16px 6px !important;
-      }
-
-      #missionBriefingScreen .mission-briefing-visual img{
-        width:min(60%,215px);
-        max-height:210px;
-      }
-
-      #missionBriefingScreen .mission-briefing-panel{
-        padding:24px 19px 30px !important;
-      }
-
-      #missionBriefingScreen .mission-briefing-copy{
-        margin:16px 0 20px;
-      }
-
-      #missionBriefingScreen .mission-success-box{
-        padding:16px 17px;
-      }
-    }
-  </style>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f1ea" />
+  <title>Glorb // Earth Field Notes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="ux-overrides.css" />
 </head>
-
 <body>
-
-  <!-- STUDENT-CONTROLLED READ ALOUD -->
-  <button
-    id="readAloudBtn"
-    class="read-aloud-btn"
-    type="button"
-    aria-label="Read this screen aloud"
-    aria-pressed="false"
-    title="Read this screen aloud"
-  >
-    <svg
-      class="speaker-svg"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.1-3.8v7.6A4.5 4.5 0 0 0 16.5 12Zm0-8.2v2.1a7 7 0 0 1 0 12.2v2.1a9 9 0 0 0 0-16.4Z"
-        fill="currentColor"
-      />
-    </svg>
-
-    <span class="read-label">READ ALOUD</span>
-  </button>
-
-  <div class="stars" aria-hidden="true"></div>
-  <div class="scanlines" aria-hidden="true"></div>
-
-  <header class="topbar">
-    <div class="brand">ZORBAX-9 RESEARCH DIVISION</div>
-
-    <div class="progress-wrap" aria-label="Mission progress">
-      <span>LISTENING DATA</span>
-
-      <div class="progress">
-        <div id="progressFill"></div>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="topbar__identity">
+        <div class="brand" aria-label="Glorb Earth Field Notes">
+          <span class="brand__dot" aria-hidden="true"></span>
+          <span>GLORB // EARTH FIELD NOTES</span>
+        </div>
+        <button class="student-chip" id="studentChip" type="button" hidden>
+          <span>RESEARCHER</span>
+          <strong id="studentChipName"></strong>
+        </button>
       </div>
 
-      <strong id="progressText">0%</strong>
+      <div class="topbar__tools">
+        <button class="icon-button topbar-tool" id="transcriptBtn" type="button" aria-label="Show page transcript" aria-expanded="false" title="Show transcript">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 9h14M5 13h9M5 17h11"/></svg>
+          <span>TEXT</span>
+        </button>
+        <button class="icon-button topbar-tool" id="speakBtn" type="button" aria-label="Read this page aloud" aria-pressed="false" title="Read this page aloud">
+          <svg class="speaker-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10H4Z"/><path d="M16 9c1 .8 1.5 1.8 1.5 3S17 14.2 16 15M18.5 6.7c1.8 1.4 2.8 3.2 2.8 5.3s-1 4-2.8 5.3"/></svg>
+          <svg class="stop-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1"/></svg>
+          <span>READ</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="viewer" aria-live="polite">
+      <div class="viewer__meta">
+        <span id="pageKicker">FLIGHT RECORDER</span>
+        <span id="pageCounter">01 / 11</span>
+      </div>
+
+      <section class="page-task" id="pageTask" aria-live="polite">
+        <div class="page-task__step" id="pageTaskStep" aria-hidden="true">1</div>
+        <div class="page-task__copy">
+          <span class="page-task__eyebrow" id="pageTaskEyebrow">YOUR TASK</span>
+          <strong id="pageTaskTitle">READ OR LISTEN</strong>
+          <p id="pageTaskText">Follow Glorb's story, then press Next.</p>
+          <div class="page-task__progress" id="pageTaskProgress" hidden></div>
+        </div>
+        <div class="page-task__actions">
+          <button class="page-task__button" id="pageZoomBtn" type="button">ZOOM PAGE +</button>
+          <button class="page-task__button page-task__button--dark" id="pageReadBtn" type="button">READ ALOUD ▶</button>
+        </div>
+      </section>
+
+      <section class="page-shell" id="pageShell">
+        <div class="page-stage" id="pageStage">
+          <img class="comic-page" id="comicPage" alt="" draggable="false" />
+          <div class="activity-stage" id="activityStage" hidden></div>
+          <div class="hotspot-layer" id="hotspotLayer" aria-label="Interactive areas"></div>
+          <button class="page-tap page-tap--left" id="tapPrev" type="button" aria-label="Previous page"></button>
+          <button class="page-tap page-tap--right" id="tapNext" type="button" aria-label="Next page"></button>
+        </div>
+
+        <div class="interaction-note" id="interactionNote" hidden>
+          <span class="interaction-note__pulse" aria-hidden="true"></span>
+          <span id="interactionNoteText">THIS PAGE HAS CLICKABLE FIELD NOTES.</span>
+        </div>
+      </section>
+
+      <nav class="pager" aria-label="Comic navigation">
+        <button class="pager__button" id="prevBtn" type="button">
+          <span aria-hidden="true">←</span><span>BACK</span>
+        </button>
+        <div class="pager__dots" id="pagerDots" aria-hidden="true"></div>
+        <button class="pager__button pager__button--next" id="nextBtn" type="button">
+          <span id="nextLabel">NEXT</span><span aria-hidden="true">→</span>
+        </button>
+      </nav>
+
+      <p class="keyboard-hint">USE ← → KEYS, SWIPE, OR CLICK THE PAGE EDGES</p>
+    </main>
+
+    <aside class="transcript" id="transcriptPanel" aria-hidden="true">
+      <div class="transcript__head">
+        <div>
+          <span class="transcript__eyebrow">PAGE TRANSCRIPT</span>
+          <h2 id="transcriptTitle">FLIGHT RECORDER</h2>
+        </div>
+        <button class="icon-button icon-button--small" id="closeTranscriptBtn" type="button" aria-label="Close transcript">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <p id="transcriptText"></p>
+      <button class="transcript__read" id="transcriptSpeakBtn" type="button">READ THIS ALOUD</button>
+    </aside>
+
+    <div class="modal" id="detailModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal__backdrop" id="modalBackdrop" type="button" aria-label="Close detail"></button>
+      <div class="modal__card">
+        <header class="modal__header">
+          <div>
+            <span class="modal__eyebrow" id="modalEyebrow">GLORB FIELD NOTE</span>
+            <h2 id="modalTitle">DETAIL</h2>
+          </div>
+          <div class="modal__actions">
+            <button class="icon-button icon-button--small" id="modalSpeakBtn" type="button" aria-label="Read detail aloud" title="Read aloud">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10H4Z"/><path d="M16 9c1 .8 1.5 1.8 1.5 3S17 14.2 16 15M18.5 6.7c1.8 1.4 2.8 3.2 2.8 5.3s-1 4-2.8 5.3"/></svg>
+            </button>
+            <button class="icon-button icon-button--small" id="modalCloseBtn" type="button" aria-label="Close detail">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+        </header>
+        <div class="modal__visual" id="modalVisual"></div>
+        <p class="modal__caption" id="modalCaption"></p>
+      </div>
     </div>
-  </header>
 
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
 
-  <main id="app">
-
-    <!-- ======================================================
-         OPENING
-    ======================================================= -->
-    <section class="screen active" id="bootScreen">
-      <div class="terminal shell">
-
-        <div class="boot-character" aria-hidden="true">
-          <img
-            src="assets/glorb-aug26-refresh/aug26-glorb-portrait-friendly.png"
-            alt=""
-          >
-        </div>
-
-        <div class="boot-copy">
-
-          <p class="eyebrow">INCOMING TRANSMISSION</p>
-
-          <h1>
-            GLORB &amp; THE<br>
-            LISTENING MISSION
-          </h1>
-
-          <div class="signal-row">
-            <span>SIGNAL</span>
-
-            <div class="signal-track">
-              <div id="signalFill"></div>
-            </div>
-
-            <strong id="signalPercent">0%</strong>
-          </div>
-
-          <p id="bootText" class="mono">
-            Searching 47 light years of classroom space…
-          </p>
-
-          <button
-            id="startBtn"
-            class="button primary hidden"
-            type="button"
-          >
-            OPEN TRANSMISSION
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         STORY
-    ======================================================= -->
-    <section class="screen" id="storyScreen">
-      <div class="story-shell shell">
-
-        <div class="story-visual">
-          <img
-            id="storyGlorb"
-            src="assets/glorb-aug26-refresh/aug26-glorb-portrait-friendly.png"
-            alt="Glorb"
-          >
-        </div>
-
-        <article class="dialogue-panel">
-
-          <p class="eyebrow dark">
-            FIRST CONTACT // EARTH CLASSROOM
-          </p>
-
-          <div class="speaker">
-            GLORB
-          </div>
-
-          <div
-            id="dialogueText"
-            class="dialogue-text"
-            aria-live="polite"
-          ></div>
-
-          <button
-            id="nextDialogue"
-            class="button ink"
-            type="button"
-          >
-            CONTINUE
-          </button>
-
-        </article>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         MISSION BRIEFING / LEARNING INTENTION
-    ======================================================= -->
-    <section class="screen" id="missionBriefingScreen">
-      <div class="story-shell shell mission-briefing-shell">
-
-        <div class="story-visual mission-briefing-visual">
-          <img
-            src="assets/glorb-aug26-refresh/aug26-glorb-pointing-up.png"
-            alt="Glorb presenting the listening mission"
-          >
-        </div>
-
-        <article class="dialogue-panel mission-briefing-panel">
-
-          <p class="eyebrow dark">
-            MISSION BRIEFING // ACTIVE LISTENING
-          </p>
-
-          <div class="speaker">
-            LEARNING INTENTION
-          </div>
-
-          <div class="mission-briefing-copy">
-            <p class="mission-intention">We are learning how to use our <strong>eyes, ears, body and words</strong> to show someone we are listening.</p>
-
-            <div class="mission-success-box">
-              <span>BY THE END OF THIS MISSION, YOU CAN:</span>
-              <ul>
-                <li>recognise active listening</li>
-                <li>show a listening body</li>
-                <li>choose what to do in a conversation</li>
-              </ul>
-            </div>
-          </div>
-
-          <button
-            id="beginTrainingBtn"
-            class="button ink"
-            type="button"
-          >
-            BEGIN TRAINING
-          </button>
-
-        </article>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         TEACHING CARDS
-    ======================================================= -->
-    <section class="screen" id="learnScreen">
-      <div class="lesson-shell shell">
-
-        <header class="section-header">
-
-          <div>
-            <p class="eyebrow">RESEARCH BRIEFING</p>
-            <h2>WHAT ACTIVE LISTENING MEANS</h2>
-          </div>
-
-          <div class="counter">
-            CARD <span id="cardCount">1</span> / 12
-          </div>
-
-        </header>
-
-
-        <div class="teaching-stage">
-
-          <article class="research-card">
-
-            <div class="research-card-visual">
-              <img
-                id="teachingImage"
-                src="assets/listening/22.webp"
-                alt=""
-              >
-            </div>
-
-
-            <div class="research-card-copy">
-
-              <p class="eyebrow dark">
-                ACTIVE LISTENING // RESEARCH CARD
-              </p>
-
-              <h3 id="teachingTitle">
-                Eye Contact
-              </h3>
-
-              <p
-                id="teachingMeaning"
-                class="skill-meaning"
-              ></p>
-
-
-              <div class="why-box">
-                <strong>WHY IT HELPS</strong>
-                <p id="teachingWhy"></p>
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <aside
-            id="glorbAnnotation"
-            class="glorb-annotation"
-            aria-live="polite"
-          >
-
-            <img
-              id="teachingGlorbImage"
-              src="assets/glorb-aug26-refresh/aug26-glorb-attentive-portrait.png"
-              alt="Glorb adding a field note"
-            >
-
-            <div class="glorb-scribble">
-              <span>GLORB // FIELD NOTE</span>
-              <p id="teachingGlorb"></p>
-            </div>
-
-          </aside>
-
-        </div>
-
-
-        <div class="teaching-footer">
-
-          <p class="teaching-hint mono">
-            Read the research card. Glorb will add his own note.
-          </p>
-
-          <div class="button-row">
-
-            <button
-              id="prevCard"
-              class="button ghost"
-              type="button"
-            >
-              BACK
-            </button>
-
-            <button
-              id="nextCard"
-              class="button primary"
-              type="button"
-            >
-              NEXT CARD
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         MISSION CONTROL
-    ======================================================= -->
-    <section class="screen" id="missionHub">
-      <div class="hub shell">
-
-        <header class="section-header">
-
-          <div>
-            <p class="eyebrow">EARTH EXPERT CONSOLE</p>
-            <h2>LISTENING MISSION</h2>
-          </div>
-
-          <div class="scorebox">
-            RESEARCH POINTS
-            <strong id="score">0 / 300</strong>
-          </div>
-
-        </header>
-
-
-        <div class="mission-grid">
-
-          <button
-            class="mission-card available"
-            data-target="sortScreen"
-            type="button"
-          >
-            <span>01</span>
-            <strong>SORT ACTIVITY</strong>
-            <em id="m1Status">AVAILABLE</em>
-          </button>
-
-
-          <button
-            class="mission-card locked"
-            data-target="bodyScreen"
-            type="button"
-            disabled
-          >
-            <span>02</span>
-            <strong>BODY CALIBRATION</strong>
-            <em id="m2Status">LOCKED</em>
-          </button>
-
-
-          <button
-            class="mission-card locked"
-            data-target="applyScreen"
-            type="button"
-            disabled
-          >
-            <span>03</span>
-            <strong>HELP GLORB TRY AGAIN</strong>
-            <em id="m3Status">LOCKED</em>
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         MISSION 01 — SORT ACTIVITY
-    ======================================================= -->
-    <section class="screen activity-screen" id="sortScreen">
-      <div class="game-shell shell">
-
-        <header class="activity-titlebar">
-          <span class="activity-dot"></span>
-          <strong>SORT ACTIVITY</strong>
-          <span class="activity-rule"></span>
-        </header>
-
-
-        <div class="activity-intro">
-
-          <img
-            src="assets/glorb-aug26-refresh/aug26-glorb-attentive-portrait.png"
-            alt="Glorb"
-          >
-
-          <p>
-            <strong>GLORB:</strong><br>
-
-            I need your help understanding human listening.
-            I have discovered it can
-            <b class="looks-word">look like</b>,
-            <b class="sounds-word">sound like</b> and
-            <b class="feels-word">feel like</b> different things.
-
-            Can you help me sort each option into the correct category?
-          </p>
-
-        </div>
-
-
-        <div
-          class="listening-sort"
-          aria-label="Sort listening behaviours into looks like, sounds like and feels like"
-        >
-
-          <section
-            class="listening-category looks"
-            data-bucket="looks"
-          >
-
-            <div class="category-header"><strong>LOOKS LIKE</strong><span>What we see with our eyes.</span></div>
-
-            <div class="drop-items">
-              <span class="drop-placeholder">
-                DRAG CARDS HERE
-              </span>
-            </div>
-
-          </section>
-
-
-          <section
-            class="listening-category sounds"
-            data-bucket="sounds"
-          >
-
-            <div class="category-header"><strong>SOUNDS LIKE</strong><span>What we hear with our ears.</span></div>
-
-            <div class="drop-items">
-              <span class="drop-placeholder">
-                DRAG CARDS HERE
-              </span>
-            </div>
-
-          </section>
-
-
-          <section
-            class="listening-category feels"
-            data-bucket="feels"
-          >
-
-            <div class="category-header"><strong>FEELS LIKE</strong><span>What we feel in our heart and body.</span></div>
-
-            <div class="drop-items">
-              <span class="drop-placeholder">
-                DRAG CARDS HERE
-              </span>
-            </div>
-
-          </section>
-
-        </div>
-
-
-        <div class="bank-heading">
-          DRAG THE OPTIONS BELOW INTO THE CORRECT CATEGORY ↗
-        </div>
-
-
-        <div
-          id="sortBank"
-          class="visual-card-bank"
-        ></div>
-
-
-        <div class="activity-footer">
-
-          <button
-            class="back-button hubBtn"
-            type="button"
-          >
-            ← &nbsp; BACK TO MISSION
-          </button>
-
-          <div
-            id="sortFeedback"
-            class="activity-feedback"
-            aria-live="polite"
-          >
-            Sort each listening behaviour into the correct category.
-          </div>
-
-          <button
-            id="checkSort"
-            class="check-button"
-            type="button"
-            disabled
-          >
-            CHECK MY ANSWERS ✓
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         MISSION 02 — BODY CALIBRATION
-    ======================================================= -->
-    <section class="screen activity-screen" id="bodyScreen">
-      <div class="game-shell shell">
-
-        <header class="activity-titlebar">
-          <span class="activity-dot"></span>
-          <strong>BODY CALIBRATION</strong>
-          <span class="activity-rule"></span>
-        </header>
-
-
-        <div class="activity-intro body-intro">
-
-          <img
-            src="assets/glorb-aug26-refresh/aug26-glorb-attentive-portrait.png"
-            alt="Glorb"
-          >
-
-          <p>
-            <strong>GLORB:</strong><br>
-
-            I need your help understanding my body when I am listening.
-            Which positions help me listen well?
-
-            Drag and drop the options to the correct spots.
-          </p>
-
-        </div>
-
-
-        <div class="body-layout">
-
-          <div
-            class="body-map"
-            aria-label="Glorb body calibration diagram"
-          >
-
-            <img
-              src="assets/glorb/body-calibration-upright.webp"
-              alt="Glorb with seven empty listening-body boxes"
-            >
-
-
-            <div
-              class="body-zone head"
-              data-part="head"
-            >
-              <span>HEAD</span>
-              <small></small>
-            </div>
-
-
-            <div
-              class="body-zone eyes"
-              data-part="eyes"
-            >
-              <span>EYES</span>
-              <small></small>
-            </div>
-
-
-            <div
-              class="body-zone ears"
-              data-part="ears"
-            >
-              <span>EARS</span>
-              <small></small>
-            </div>
-
-
-            <div
-              class="body-zone mouth"
-              data-part="mouth"
-            >
-              <span>MOUTH</span>
-              <small></small>
-            </div>
-
-
-            <div
-              class="body-zone body"
-              data-part="body"
-            >
-              <span>BODY</span>
-              <small></small>
-            </div>
-
-
-            <div
-              class="body-zone hands"
-              data-part="hands"
-            >
-              <span>HANDS</span>
-              <small></small>
-            </div>
-
-
-            <div
-              class="body-zone feet"
-              data-part="feet"
-            >
-              <span>FEET</span>
-              <small></small>
-            </div>
-
-          </div>
-
-
-          <aside class="body-bank">
-
-            <h3>▸ DRAG THE OPTIONS BELOW</h3>
-
-            <p>
-              Drag an instruction into the matching body-part box,
-              or tap an instruction and then tap the box.
-            </p>
-
-            <div id="bodyCards"></div>
-
-          </aside>
-
-        </div>
-
-
-        <div class="activity-footer">
-
-          <button
-            class="back-button hubBtn"
-            type="button"
-          >
-            ← &nbsp; BACK TO MISSION
-          </button>
-
-          <div
-            id="bodyFeedback"
-            class="activity-feedback"
-            aria-live="polite"
-          >
-            Seven body parts need listening instructions.
-          </div>
-
-          <button
-            id="checkBody"
-            class="check-button"
-            type="button"
-            disabled
-          >
-            CHECK MY ANSWERS ✓
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         MISSION 03 — HELP GLORB TRY AGAIN
-    ======================================================= -->
-    <section class="screen activity-screen" id="applyScreen">
-      <div class="game-shell shell">
-
-        <header class="activity-titlebar">
-          <span class="activity-dot"></span>
-          <strong>HELP GLORB TRY AGAIN</strong>
-          <span class="activity-rule"></span>
-        </header>
-
-
-        <div class="apply-scenario">
-
-          <img
-            src="assets/glorb-aug26-refresh/aug26-glorb-thinking-closeup.png"
-            alt="Glorb looking unsure"
-          >
-
-          <div>
-
-            <p class="speaker">
-              GLORB
-            </p>
-
-            <p>
-              “Pip is coming back. Their dog is still sick.
-              I have one cloud fact ready, but I now suspect
-              this is not the correct moment.
-
-              What should I do?”
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <h3 class="instruction">
-          Choose the four actions Glorb should use.
-        </h3>
-
-
-        <div
-          id="actionChoices"
-          class="choice-grid"
-        ></div>
-
-
-        <div class="activity-footer">
-
-          <button
-            class="back-button hubBtn"
-            type="button"
-          >
-            ← &nbsp; BACK TO MISSION
-          </button>
-
-          <div
-            id="actionFeedback"
-            class="activity-feedback"
-            aria-live="polite"
-          >
-            Select four actions.
-          </div>
-
-          <button
-            id="checkActions"
-            class="check-button"
-            type="button"
-            disabled
-          >
-            CHECK MY PLAN ✓
-          </button>
-
-        </div>
-
-
-        <div
-          id="replyStage"
-          class="reply-stage hidden"
-        >
-
-          <h3>
-            Now choose Glorb's best reply.
-          </h3>
-
-          <div
-            id="replyChoices"
-            class="choice-grid replies"
-          ></div>
-
-          <button
-            id="checkReply"
-            class="check-button"
-            type="button"
-            disabled
-          >
-            SEND REPLY ✓
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ======================================================
-         FINAL
-    ======================================================= -->
-    <section class="screen" id="finalScreen">
-      <div class="story-shell shell">
-
-        <div class="story-visual final-visual">
-
-          <img
-            src="assets/glorb-aug26-refresh/aug26-glorb-understanding-thumbs-up.png"
-            alt="Glorb smiling"
-          >
-
-        </div>
-
-
-        <article class="dialogue-panel final-paper">
-
-          <p class="eyebrow dark">
-            FINAL INCIDENT REPORT
-          </p>
-
-          <h2>
-            GLORB TRIES AGAIN
-          </h2>
-
-          <p>
-            <strong>Glorb:</strong>
-            “Pip, I would like to try that conversation again.
-            I am facing you. I will wait until you finish.
-            Is your dog feeling better?”
-          </p>
-
-          <p>
-            <strong>Pip:</strong>
-            “A little. Thanks for asking.”
-          </p>
-<button
-            id="restartBtn"
-            class="button ink"
-            type="button"
-          >
-            REPLAY MISSION
-          </button>
-
-        </article>
-
-      </div>
-    </section>
-
-  </main>
-
-  <script src="script.js?v=29"></script>
-  <script src="fixes.js?v=30"></script>
-
-  <script id="mission-briefing-flow">
-    (() => {
-      const nextDialogueBtn = document.getElementById('nextDialogue');
-      const beginTrainingBtn = document.getElementById('beginTrainingBtn');
-
-      /*
-        After Glorb asks the Earth Expert for help,
-        show the Learning Intention before the research cards.
-        This runs after script.js and fixes.js so it becomes
-        the final navigation behaviour.
-      */
-      if (nextDialogueBtn) {
-        nextDialogueBtn.onclick = () => {
-          if (dialogueIndex < dialogue.length - 1) {
-            dialogueIndex += 1;
-            runDialogue();
-          } else {
-            setProgress(12);
-            show('missionBriefingScreen');
-          }
-        };
-      }
-
-      if (beginTrainingBtn) {
-        beginTrainingBtn.onclick = () => {
-          setProgress(15);
-          show('learnScreen');
-          renderTeaching();
-        };
-      }
-    })();
-  </script>
-
+  <script src="script.js"></script>
+  <script src="ux-enhancer.js"></script>
 </body>
 </html>
