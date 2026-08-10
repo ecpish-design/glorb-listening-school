@@ -1,38 +1,21 @@
-GLORB LEARNING INTENTION — FINAL FIX
+GLORB NAME + CERTIFICATE UPDATE
 
-This ZIP contains:
-1. mission-briefing-final.css
-2. mission-briefing-html.txt
+Upload BOTH files in this folder to the ROOT of your GitHub repository and replace the existing files with the same names:
 
-The CSS is deliberately separate so it does NOT overwrite your existing fixes.css
-and accidentally remove the other Glorb fixes.
+1. index.html
+2. fixes.js
 
-DO THIS:
+What this update adds:
+- A first-name entry screen before the mission begins.
+- Glorb uses the student's name during the mission where he directly addresses the Earth Expert.
+- A personalised completion certificate at the end.
+- The certificate states the mission, activities completed, learning intention, and what the student can now do.
+- PRINT / SAVE PDF button for a clean certificate-only printout.
+- SHARE CERTIFICATE button (uses the device share sheet when supported; otherwise copies a shareable completion message and link).
+- NEW STUDENT button clears the saved name and restarts for another student.
 
-1. Upload mission-briefing-final.css to the ROOT of your GitHub repository,
-   beside index.html, style.css and fixes.css.
+The existing final scene still ends on Pip's statement. The certificate sits below the final story rather than adding another Glorb speech.
 
-2. In index.html, inside <head>, directly underneath:
-   <link rel="stylesheet" href="fixes.css?v=27">
-
-   add:
-   <link rel="stylesheet" href="mission-briefing-final.css?v=1">
-
-3. In the MISSION BRIEFING / LEARNING INTENTION section of index.html,
-   replace ONLY the existing <div class="dialogue-text">...</div>
-   with the code in mission-briefing-html.txt.
-
-Do NOT delete style.css, fixes.css, script.js or fixes.js.
-
-The new layout:
-- removes the giant spaces caused by white-space: pre-wrap;
-- keeps the learning intention readable as normal sentences;
-- keeps the desktop page in the same two-column format as the other Glorb story pages;
-- stacks cleanly on iPad/mobile;
-- uses:
-  "We are learning how to:
-   use our eyes, ears, body and words
-   to show someone we are listening."
-
-- uses:
-  "BY THE END OF THIS MISSION, YOU WILL BE ABLE TO:"
+After GitHub Pages deploys, hard-refresh once if needed:
+Mac: Command + Shift + R
+Windows: Ctrl + Shift + R
