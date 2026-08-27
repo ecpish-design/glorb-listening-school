@@ -197,8 +197,13 @@
   <div class="stars" aria-hidden="true"></div>
   <div class="scanlines" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <div class="brand">ZORBAX-9 RESEARCH DIVISION</div>
+ <header class="topbar">
+
+  <div class="brand">
+    GLORB // LISTENING MISSION
+  </div>
+
+  <div class="topbar-right">
 
     <div class="progress-wrap" aria-label="Mission progress">
       <span>LISTENING DATA</span>
@@ -209,7 +214,21 @@
 
       <strong id="progressText">0%</strong>
     </div>
-  </header>
+
+    <button
+      id="adultInfoBtn"
+      class="adult-info-trigger"
+      type="button"
+      aria-haspopup="dialog"
+      aria-controls="adultInfoModal"
+    >
+      <span aria-hidden="true">ⓘ</span>
+      MORE INFORMATION
+    </button>
+
+  </div>
+
+</header>
 
 
   <main id="app">
@@ -1020,6 +1039,521 @@
       }
     })();
   </script>
+<!-- ======================================================
+     ADULT INFORMATION MODAL
+======================================================= -->
 
+<div
+  id="adultInfoModal"
+  class="adult-info-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="adultInfoTitle"
+  hidden
+>
+
+  <div class="adult-info-backdrop" data-close-adult-info></div>
+
+  <section class="adult-info-panel">
+
+    <header class="adult-info-header">
+
+      <div>
+        <p class="adult-info-eyebrow">FOR ADULTS</p>
+        <h2 id="adultInfoTitle">
+          About the Listening Mission
+        </h2>
+      </div>
+
+      <button
+        id="adultInfoClose"
+        class="adult-info-close"
+        type="button"
+        aria-label="Close information"
+      >
+        ×
+      </button>
+
+    </header>
+
+
+    <nav
+      class="adult-info-tabs"
+      aria-label="Listening Mission information"
+    >
+      <button class="adult-info-tab active" data-info-tab="about" type="button">
+        About
+      </button>
+
+      <button class="adult-info-tab" data-info-tab="learning" type="button">
+        Learning
+      </button>
+
+      <button class="adult-info-tab" data-info-tab="curriculum" type="button">
+        Curriculum
+      </button>
+
+      <button class="adult-info-tab" data-info-tab="evidence" type="button">
+        Evidence + references
+      </button>
+
+      <button class="adult-info-tab" data-info-tab="use" type="button">
+        Use + interpretation
+      </button>
+    </nav>
+
+
+    <div class="adult-info-content">
+
+
+      <!-- ================= ABOUT ================= -->
+
+      <div
+        class="adult-info-page active"
+        data-info-page="about"
+      >
+
+        <article class="adult-card">
+          <h3>What is it?</h3>
+
+          <p>
+            <strong>GLORB // Listening Mission</strong> is an
+            explicit-teaching interactive lesson. Students help
+            Glorb work out what active listening can look, sound
+            and feel like, connect listening behaviours to the
+            body, and then use those ideas in a conversation
+            with Pip.
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>What it is for</h3>
+
+          <p>
+            It makes an often-unwritten social skill more concrete
+            by breaking active listening into
+            <strong>observable actions that can be taught,
+            practised and discussed.</strong>
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>Learning focus</h3>
+
+          <p>
+            Students practise noticing listening behaviours,
+            waiting while another person speaks, showing
+            attention in different ways and choosing a response
+            that connects to what has been said.
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>Teaching aid, not a real-life test</h3>
+
+          <p>
+            Completion shows supported performance inside this
+            lesson. It does not prove that a student will use the
+            same listening skills independently across different
+            people, settings or real conversations.
+          </p>
+        </article>
+
+      </div>
+
+
+      <!-- ================= LEARNING ================= -->
+
+      <div
+        class="adult-info-page"
+        data-info-page="learning"
+      >
+
+        <article class="adult-card adult-card-wide">
+          <h3>Learning sequence</h3>
+
+          <p class="adult-learning-sequence">
+            LEARN → SORT → MAP → APPLY
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>Learn</h3>
+
+          <p>
+            Students work through <strong>12 active-listening
+            examples</strong>. Each behaviour is named,
+            illustrated and accompanied by an explanation of what
+            it means and why it may help during a conversation.
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>Sort</h3>
+
+          <p>
+            Students organise listening examples into
+            <strong>LOOKS LIKE</strong>,
+            <strong>SOUNDS LIKE</strong> and
+            <strong>FEELS LIKE</strong> to make the skill more
+            concrete.
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>Map</h3>
+
+          <p>
+            Students connect listening strategies to the
+            <strong>head, eyes, ears, mouth, body, hands and
+            feet</strong>.
+          </p>
+        </article>
+
+
+        <article class="adult-card">
+          <h3>Apply</h3>
+
+          <p>
+            Students help Glorb choose several listening actions
+            in a conversation with Pip, then choose a response
+            that stays connected to Pip's topic.
+          </p>
+        </article>
+
+
+        <article class="adult-card adult-card-wide">
+          <h3>Students practise</h3>
+
+          <p>
+            Recognising active listening, showing attention,
+            managing their conversational turn, waiting for
+            another person to finish, asking relevant questions
+            and responding to what the speaker has said.
+          </p>
+        </article>
+
+      </div>
+
+
+      <!-- ================= CURRICULUM ================= -->
+
+      <div
+        class="adult-info-page"
+        data-info-page="curriculum"
+      >
+
+        <article class="adult-card">
+
+          <h3>Australian Curriculum v9.0</h3>
+
+          <p>
+            <strong>Personal and Social Capability</strong>
+          </p>
+
+          <p>
+            Primary link:
+            <strong>Social Management → Communication</strong>
+          </p>
+
+        </article>
+
+
+        <article class="adult-card">
+
+          <h3>Years 5–6 connection</h3>
+
+          <p>
+            The strongest Level 4 connection is:
+          </p>
+
+          <p>
+            <strong>
+              “apply skills to address factors that influence
+              verbal and non-verbal communication”
+            </strong>
+          </p>
+
+        </article>
+
+
+        <article class="adult-card">
+
+          <h3>What this lesson practises</h3>
+
+          <p>
+            Using verbal and non-verbal communication skills when
+            listening and responding to another person.
+          </p>
+
+          <p>
+            The lesson also has a supporting connection to
+            <strong>Relational Awareness</strong> because
+            listening is presented as part of reciprocal
+            interaction.
+          </p>
+
+        </article>
+
+
+        <article class="adult-card">
+
+          <h3>Curriculum source</h3>
+
+          <p>
+            <strong>
+              Australian Curriculum v9.0 — Personal and Social
+              Capability
+            </strong>
+          </p>
+
+        </article>
+
+      </div>
+
+
+      <!-- ================= EVIDENCE ================= -->
+
+      <div
+        class="adult-info-page evidence-layout"
+        data-info-page="evidence"
+      >
+
+        <div class="adult-evidence-cards">
+
+          <article class="adult-card">
+            <h3>Explicit teaching</h3>
+
+            <p>
+              The mission turns an abstract instruction such as
+              “listen properly” into named, observable actions
+              that can be shown, discussed and practised.
+            </p>
+          </article>
+
+
+          <article class="adult-card">
+            <h3>Active listening is more than hearing</h3>
+
+            <p>
+              The lesson treats listening as an interpersonal
+              process involving
+              <strong>attention, processing and response.</strong>
+            </p>
+          </article>
+
+
+          <article class="adult-card">
+            <h3>From model to application</h3>
+
+            <p>
+              The social problem comes first, followed by explicit
+              teaching and practice before the learner returns to
+              a similar interaction.
+            </p>
+
+            <p>
+              <strong>
+                ORIGINAL PROBLEM → LEARNING → PRACTICE →
+                REPAIRED INTERACTION
+              </strong>
+            </p>
+          </article>
+
+
+          <article class="adult-card">
+            <h3>Formative feedback</h3>
+
+            <p>
+              Incorrect answers stay inside the learning process.
+              Students receive information that helps them
+              reconsider a choice and try again.
+            </p>
+          </article>
+
+
+          <article class="adult-card">
+            <h3>Developmentally respectful design</h3>
+
+            <p>
+              The skill is taught explicitly while the visual
+              style, humour and interaction design remain
+              age-respectful.
+            </p>
+          </article>
+
+        </div>
+
+
+        <article class="adult-card adult-reference-card">
+
+          <h3>References</h3>
+
+          <ol>
+            <li>
+              <strong>
+                Australian Curriculum, Assessment and Reporting
+                Authority. (2022).
+              </strong>
+              <em>
+                Australian Curriculum Version 9.0: Personal and
+                Social Capability.
+              </em>
+            </li>
+
+            <li>
+              <strong>Bodie, G. D. (2011).</strong>
+              The Active-Empathic Listening Scale (AELS):
+              Conceptualization and evidence of validity within
+              the interpersonal domain.
+              <em>Communication Quarterly, 59</em>(3), 277–295.
+            </li>
+
+            <li>
+              <strong>
+                Gearhart, C. C., &amp; Bodie, G. D. (2011).
+              </strong>
+              Active-empathic listening as a general social skill.
+              <em>Communication Reports, 24</em>(2), 86–98.
+            </li>
+
+            <li>
+              <strong>
+                Weger, H., Jr., Castle Bell, G., Minei, E. M.,
+                &amp; Robinson, M. C. (2014).
+              </strong>
+              The relative effectiveness of active listening in
+              initial interactions.
+              <em>International Journal of Listening, 28</em>(1),
+              13–31.
+            </li>
+
+            <li>
+              <strong>Durlak, J. A., et al. (2011).</strong>
+              The impact of enhancing students' social and
+              emotional learning.
+              <em>Child Development, 82</em>(1), 405–432.
+            </li>
+
+            <li>
+              <strong>Shute, V. J. (2008).</strong>
+              Focus on formative feedback.
+              <em>Review of Educational Research, 78</em>(1),
+              153–189.
+            </li>
+          </ol>
+
+        </article>
+
+      </div>
+
+
+      <!-- ================= USE ================= -->
+
+      <div
+        class="adult-info-page"
+        data-info-page="use"
+      >
+
+        <article class="adult-card adult-important-card">
+
+          <h3>Important</h3>
+
+          <p>
+            <strong>
+              This is an educational practice activity. It is not
+              a clinical, medical or psychological assessment.
+            </strong>
+          </p>
+
+        </article>
+
+
+        <article class="adult-card">
+
+          <h3>Use with in-person teaching</h3>
+
+          <p>
+            Pair the mission with discussion, adult modelling,
+            role-play and real conversations outside the screen.
+          </p>
+
+        </article>
+
+
+        <article class="adult-card">
+
+          <h3>Listening can look different</h3>
+
+          <p>
+            The behaviours in the mission are
+            <strong>teaching examples, not a checklist every
+            person must perform in exactly the same way.</strong>
+          </p>
+
+          <p>
+            Eye contact, body orientation, movement and other
+            visible signs of attention can vary between people.
+          </p>
+
+        </article>
+
+
+        <article class="adult-card">
+
+          <h3>Support is individual</h3>
+
+          <p>
+            Focus on whether the learner is able to attend,
+            understand and respond rather than requiring one fixed
+            listening posture.
+          </p>
+
+        </article>
+
+
+        <article class="adult-card adult-card-wide">
+
+          <h3>How to support a student</h3>
+
+          <p>
+            Let the student try first. Then ask:
+            <strong>What showed you that Glorb was listening?
+            What did Glorb do differently? How did his reply
+            connect to what Pip said? Could someone show they are
+            listening in another way?</strong>
+          </p>
+
+        </article>
+
+
+        <article class="adult-card adult-card-wide">
+
+          <h3>Interpret completion carefully</h3>
+
+          <p>
+            The research base supports the teaching and design
+            rationale used here. It does not show that completing
+            this lesson proves real-world listening ability or
+            that GLORB itself has been independently proven
+            effective.
+          </p>
+
+        </article>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+</div>
 </body>
 </html>
