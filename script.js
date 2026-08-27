@@ -2684,3 +2684,155 @@ $('#checkReply').onclick = () => {
 $('#restartBtn').onclick = () => {
   location.reload();
 };
+/* =========================================================
+   GLORB LISTENING MISSION — ADULT INFORMATION MODAL
+========================================================= */
+
+(() => {
+
+  const modal =
+    document.getElementById('adultInfoModal');
+
+  const openBtn =
+    document.getElementById('adultInfoBtn');
+
+  const closeBtn =
+    document.getElementById('adultInfoClose');
+
+  const tabs =
+    [...document.querySelectorAll('.adult-info-tab')];
+
+  const pages =
+    [...document.querySelectorAll('.adult-info-page')];
+
+  if (!modal || !openBtn || !closeBtn) return;
+
+
+  function openAdultInfo(){
+
+    modal.hidden = false;
+
+    document.body.classList.add(
+      'adult-info-open'
+    );
+
+    closeBtn.focus();
+
+  }
+
+
+  function closeAdultInfo(){
+
+    modal.hidden = true;
+
+    document.body.classList.remove(
+      'adult-info-open'
+    );
+
+    openBtn.focus();
+
+  }
+
+
+  function showAdultInfoTab(name){
+
+    tabs.forEach(tab => {
+
+      const active =
+        tab.dataset.infoTab === name;
+
+      tab.classList.toggle(
+        'active',
+        active
+      );
+
+      tab.setAttribute(
+        'aria-selected',
+        String(active)
+      );
+
+    });
+
+
+    pages.forEach(page => {
+
+      page.classList.toggle(
+        'active',
+        page.dataset.infoPage === name
+      );
+
+    });
+
+
+    const content =
+      modal.querySelector(
+        '.adult-info-content'
+      );
+
+    if (content) {
+      content.scrollTop = 0;
+    }
+
+  }
+
+
+  openBtn.addEventListener(
+    'click',
+    openAdultInfo
+  );
+
+
+  closeBtn.addEventListener(
+    'click',
+    closeAdultInfo
+  );
+
+
+  modal
+    .querySelectorAll(
+      '[data-close-adult-info]'
+    )
+    .forEach(element => {
+
+      element.addEventListener(
+        'click',
+        closeAdultInfo
+      );
+
+    });
+
+
+  tabs.forEach(tab => {
+
+    tab.addEventListener(
+      'click',
+      () => {
+
+        showAdultInfoTab(
+          tab.dataset.infoTab
+        );
+
+      }
+    );
+
+  });
+
+
+  document.addEventListener(
+    'keydown',
+    event => {
+
+      if (
+        event.key === 'Escape' &&
+        !modal.hidden
+      ) {
+        closeAdultInfo();
+      }
+
+    }
+  );
+
+
+  showAdultInfoTab('about');
+
+})();
