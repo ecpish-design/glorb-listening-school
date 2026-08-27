@@ -2688,7 +2688,7 @@ $('#restartBtn').onclick = () => {
    GLORB LISTENING MISSION — ADULT INFORMATION MODAL
 ========================================================= */
 
-(() => {
+document.addEventListener('DOMContentLoaded', () => {
 
   const modal =
     document.getElementById('adultInfoModal');
@@ -2835,4 +2835,4 @@ $('#restartBtn').onclick = () => {
 
   showAdultInfoTab('about');
 
-})();
+});
